@@ -7,7 +7,7 @@ app = Flask(__name__)
 db_config = {
     "host": "localhost",
     "user": "root",
-    "password": "root" # Type your database password here
+    "password": "root" # Type your database password here   
 }
 
 def initialize_database():
