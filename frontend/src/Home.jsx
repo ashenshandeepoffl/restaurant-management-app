@@ -1,10 +1,32 @@
-import React from "react";
-import NavBar from "./NavBar";
-import Footer from "./Footer";
+import React, { useState, useEffect } from "react"; // Add missing imports
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
+import axios from "axios";
 
 const HomePage = () => {
+  const [promotions, setPromotions] = useState([]); // State to store promotions
+  const [loading, setLoading] = useState(true); // Loading state
+
+  useEffect(() => {
+    const fetchPromotions = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/promotions");
+        console.log(response.data); // Log to check the response format
+        setPromotions(response.data);
+      } catch (error) {
+        console.error("Error fetching promotions:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchPromotions();
+  }, []);
+  
+
   return (
     <div className="text-gray-900 min-h-screen">
+
       <NavBar />
 
       {/* Hero Section */}
@@ -125,8 +147,30 @@ const HomePage = () => {
         Take advantage of our limited-time offers on your favorite dishes. Don’t miss out on these exclusive deals!
       </p>
     </div>
-    {/* need to import the promotions part here */}
-    
+    {/* Display promotions */}
+    {loading ? (
+      <p className="text-gray-600">Loading promotions...</p>
+    ) : promotions.length > 0 ? (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {promotions.map((promo) => (
+          <div key={promo._id || promo.title} className="bg-white rounded-lg shadow-lg p-6">
+            <h4 className="text-xl font-semibold text-gray-900">{promo.title}</h4>
+            <p className="text-gray-700 mt-2">{promo.description}</p>
+            <p className="text-green-600 font-semibold mt-4">
+              {promo.discount_percentage}% Off
+            </p>
+            <p className="text-gray-600 mt-2">
+              <strong>Start Date:</strong> {promo.start_date}
+            </p>
+            <p className="text-gray-600">
+              <strong>End Date:</strong> {promo.end_date}
+            </p>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <p className="text-gray-600">No promotions available at the moment.</p>
+    )}
   </div>
 </section>
 
