@@ -7,3 +7,4 @@ backend\Scripts\activate
 
 <!-- Then, enter this command -->
 pip install Flask pymysql
+
