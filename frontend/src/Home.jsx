@@ -121,7 +121,7 @@ const HomePage = () => {
         us in celebrating our story and the adventures that lie ahead.
       </p>
       <a
-        href="#about"
+        href="./About"
         className="bg-yellow-300 text-white px-6 py-3 rounded-lg text-lg hover:bg-black"
       >
         Learn More
