@@ -1,12 +1,105 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const SignUpForm = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    setErrors({ ...errors, [name]: "" });
+  };
+
+  const validate = () => {
+    let newErrors = {};
+
+    if (!isLoginMode) {
+      if (!formData.name.trim()) newErrors.name = "Name is required";
+      if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email is invalid";
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+
+    if (!isLoginMode && formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validate()) {
+      toast.error("Please fix the errors in the form.");
+      return;
+    }
+
+    try {
+      if (!isLoginMode) {
+        // Sign-Up Request
+        const response = await axios.post("http://localhost:5000/register", {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          password: formData.password,
+        });
+        toast.success(response.data.message);
+        setTimeout(() => {
+          toggleMode(); // Switch to login mode after successful registration
+        }, 1000);
+      } else {
+        // Login Request
+        const response = await axios.post("http://localhost:5000/login", {
+          email: formData.email,
+          password: formData.password,
+        });
+        toast.success(response.data.message);
+        setTimeout(() => {
+          navigate("/dashboard"); // Redirect to Dashboard after successful login
+        }, 1000);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.error || "An error occurred");
+    }
+  };
 
   const toggleMode = () => {
     setIsLoginMode((prevMode) => !prevMode);
+    setErrors({});
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+      confirmPassword: "",
+    });
   };
+
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-yellow-500 via-red-400 to-orange-500 p-4">
@@ -20,8 +113,7 @@ const SignUpForm = () => {
             : "Sign up to explore exclusive offers and services."}
         </p>
 
-        <form>
-          {/* Name Input (Only for Sign Up) */}
+        <form onSubmit={handleSubmit}>
           {!isLoginMode && (
             <div className="mb-4 sm:mb-6">
               <label htmlFor="name" className="block text-gray-700 font-medium mb-1">
@@ -31,13 +123,14 @@ const SignUpForm = () => {
                 type="text"
                 id="name"
                 name="name"
-                required
+                value={formData.name}
+                onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:outline-none"
               />
+              {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
             </div>
           )}
 
-          {/* Email Input */}
           <div className="mb-4 sm:mb-6">
             <label htmlFor="email" className="block text-gray-700 font-medium mb-1">
               Email
@@ -46,12 +139,13 @@ const SignUpForm = () => {
               type="email"
               id="email"
               name="email"
-              required
+              value={formData.email}
+              onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:outline-none"
             />
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
           </div>
 
-          {/* Phone Input (Only for Sign Up) */}
           {!isLoginMode && (
             <div className="mb-4 sm:mb-6">
               <label htmlFor="phone" className="block text-gray-700 font-medium mb-1">
@@ -61,13 +155,14 @@ const SignUpForm = () => {
                 type="text"
                 id="phone"
                 name="phone"
-                required
+                value={formData.phone}
+                onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:outline-none"
               />
+              {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
             </div>
           )}
 
-          {/* Password Input */}
           <div className="mb-4 sm:mb-6">
             <label htmlFor="password" className="block text-gray-700 font-medium mb-1">
               Password
@@ -76,12 +171,13 @@ const SignUpForm = () => {
               type="password"
               id="password"
               name="password"
-              required
+              value={formData.password}
+              onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:outline-none"
             />
+            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
 
-          {/* Confirm Password Input (Only for Sign Up) */}
           {!isLoginMode && (
             <div className="mb-4 sm:mb-6">
               <label htmlFor="confirmPassword" className="block text-gray-700 font-medium mb-1">
@@ -91,13 +187,16 @@ const SignUpForm = () => {
                 type="password"
                 id="confirmPassword"
                 name="confirmPassword"
-                required
+                value={formData.confirmPassword}
+                onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:outline-none"
               />
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
+              )}
             </div>
           )}
 
-          {/* Submit Button */}
           <div className="mb-4 sm:mb-6">
             <button
               type="submit"
@@ -107,7 +206,6 @@ const SignUpForm = () => {
             </button>
           </div>
 
-          {/* Toggle Between Login and Sign Up */}
           <div className="text-center">
             <span className="text-gray-600">
               {isLoginMode ? "New here?" : "Already have an account?"}{" "}
@@ -121,6 +219,8 @@ const SignUpForm = () => {
             </span>
           </div>
         </form>
+
+        <ToastContainer position="top-center" autoClose={3000} />
       </div>
     </div>
   );
