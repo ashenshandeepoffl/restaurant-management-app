@@ -28,32 +28,32 @@ const ReservationPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
-<NavBar />
-<div className="mt-20"> {/* Add margin to avoid overlap */}
+      <NavBar />
+      <div className="mt-20"> {/* Add margin to avoid overlap */}
       {/* Reservation Section */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 bg-white rounded shadow-md overflow-hidden mb-12">
         {/* Left Section: Image */}
-        <div className="relative">
+        <div className="relative h-64 lg:h-auto">
           <img
             src="/images/Reserved1.jpg"
             alt="Reserved Table"
-            className="w-auto h-full object-cover rounded-xl"
+            className="w-full h-full object-cover rounded-lg"
           />
         </div>
 
         {/* Right Section: Reservation Form */}
-        <div className="p-8 flex flex-col justify-center">
-          <h2 className="text-sm text-yellow-600 tracking-wide font-medium mb-2">
+        <div className="p-6 sm:p-8 flex flex-col justify-center">
+          <h2 className="text-lg text-yellow-600 tracking-wide font-medium mb-2">
             RESERVATION
           </h2>
-          <h1 className="text-4xl font-bold mb-4 text-gray-800">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 text-gray-800">
             Book your table now
           </h1>
           <p className="text-gray-500 mb-6">
             The people, food, and the prime location make our restaurant the
             perfect place for friends and family to come together.
           </p>
-          <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <input
               type="text"
               name="name"
@@ -94,12 +94,12 @@ const ReservationPage = () => {
               placeholder="Person"
               value={reservation.guests}
               onChange={handleChange}
-              className="col-span-1 p-3 border rounded focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              className="col-span-1 sm:col-span-2 p-3 border rounded focus:outline-none focus:ring-2 focus:ring-yellow-500"
               required
             />
             <button
               type="submit"
-              className="col-span-2 mt-4 bg-yellow-500 text-white font-semibold px-6 py-3 rounded hover:bg-yellow-600 transition"
+              className="col-span-1 sm:col-span-2 mt-4 bg-yellow-500 text-white font-semibold px-6 py-3 rounded hover:bg-yellow-600 transition"
             >
               Book a Table
             </button>
@@ -107,35 +107,39 @@ const ReservationPage = () => {
         </div>
       </div>
 
-{/* Gallery Section */}
-<section className="max-w-7xl mx-auto">
-  <div className="text-center mb-8">
-    <h3 className="text-sm uppercase text-yellow-600 tracking-widest font-medium mb-2">
-      Gallery
-    </h3>
-    <h2 className="text-3xl font-bold mt-2">What You Can Expect From Us</h2>
-  </div>
+      {/* Gallery Section */}
+      <section className="max-w-7xl mx-auto">
+        <div className="text-center mb-8">
+          <h3 className="text-lg uppercase text-yellow-600 tracking-widest font-medium mb-2">
+            Gallery
+          </h3>
+          <h2 className="text-2xl sm:text-3xl font-bold mt-2">
+            What You Can Expect From Us
+          </h2>
+        </div>
 
-  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-    {/* Image 1 */}
-    <div className="rounded-lg overflow-hidden group">
-      <img
-        src="/images/food1.jpeg"
-        alt="Pancakes"
-        className="w-full h-full object-cover transform transition duration-500 group-hover:scale-105"
-      />
-    </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          {/* Image 1 */}
+          <div className="rounded-lg overflow-hidden group">
+            <img
+              src="/images/food1.jpeg"
+              alt="Pancakes"
+              className="w-full h-40 sm:h-48 md:h-60 lg:h-full object-cover transform transition duration-500 group-hover:scale-105"
+            />
+          </div>
 
-    {/* Image 2 */}
-    <div className="rounded-lg overflow-hidden group">
-      <img
-        src="/images/food3.jpeg"
-        alt="Spaghetti"
-        className="w-full h-full object-cover transform transition duration-500 group-hover:scale-105"
-      />
-    </div>
+          {/* Image 2 */}
+          <div className="rounded-lg overflow-hidden group">
+            <img
+              src="/images/food3.jpeg"
+              alt="Spaghetti"
+              className="w-full h-40 sm:h-48 md:h-60 lg:h-full object-cover transform transition duration-500 group-hover:scale-105"
+            />
+          </div>
 
-    {/* Image 3 */}
+          
+
+           {/* Image 3 */}
     <div className="rounded-lg overflow-hidden group row-span-2 md:row-span-2">
       <img
         src="/images/restaurant.jpg"
@@ -144,29 +148,27 @@ const ReservationPage = () => {
       />
     </div>
 
-    {/* Image 4 */}
-    <div className="rounded-lg overflow-hidden group">
-      <img
-        src="/images/food2.jpeg"
-        alt="Dumplings"
-        className="w-full h-full object-cover transform transition duration-500 group-hover:scale-105"
-      />
-    </div>
+          {/* Image 4 */}
+          <div className="rounded-lg overflow-hidden group">
+            <img
+              src="/images/food2.jpeg"
+              alt="Dumplings"
+              className="w-full h-40 sm:h-48 md:h-60 lg:h-full object-cover transform transition duration-500 group-hover:scale-105"
+            />
+          </div>
 
-    {/* Image 5 */}
-    <div className="rounded-lg overflow-hidden group">
-      <img
-        src="/images/drinks1.jpg"
-        alt="Drinks"
-        className="w-full h-full object-cover transform transition duration-500 group-hover:scale-105"
-      />
+          {/* Image 5 */}
+          <div className="rounded-lg overflow-hidden group">
+            <img
+              src="/images/drinks1.jpg"
+              alt="Drinks"
+              className="w-full h-40 sm:h-48 md:h-60 lg:h-full object-cover transform transition duration-500 group-hover:scale-105"
+            />
+          </div>
+        </div>
+      </section>
     </div>
-  </div>
-</section>
-
- 
-</div>
-    <Footer />
+<Footer />
   </div>
   );
 };
