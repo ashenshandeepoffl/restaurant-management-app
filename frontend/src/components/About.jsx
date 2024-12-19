@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"; 
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 
@@ -7,12 +7,12 @@ const About = () => {
     <div className="text-gray-900 min-h-screen bg-gradient-to-b from-blue-50 via-purple-100 to-pink-200">
       <NavBar />
 
-      {/* Hero Section */}
+      {/* Hero Section - Large Image */}
       <section
         id="hero"
-        className="relative bg-cover bg-center py-36 text-center"
+        className="relative bg-cover bg-center py-48 text-center"
         style={{
-          backgroundImage: "url('/images/hero-bg.jpg')",
+          backgroundImage: "url('/images/about1.jpg')",
         }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
@@ -24,81 +24,111 @@ const About = () => {
         </div>
       </section>
 
-      {/* Our Story */}
-      <section id="our-story" className="py-20 px-6 bg-white">
+      {/* Our Restaurant */}
+      <section id="our-restaurant" className="py-20 px-6 bg-white">
         <div className="container mx-auto text-center">
-          <h2 className="text-4xl font-semibold text-gray-900">Our Story</h2>
+          <h2 className="text-4xl font-semibold text-gray-900">Our Restaurant</h2>
           <p className="text-lg text-gray-700 mt-4 max-w-3xl mx-auto">
-            Born from a passion for creativity and exceptional flavors, we set out to change the culinary scene. Our journey began with a single vision: To offer unique dining experiences where quality and innovation intersect.
+            We pride ourselves on offering a welcoming environment where culinary passion meets a sense of community. Our restaurant focuses on creating a unique dining experience, where each dish is crafted with the finest ingredients and love.
           </p>
         </div>
-        <div className="container mx-auto mt-16 flex flex-col md:flex-row items-center justify-between px-4">
+      </section>
+
+      {/* About the Food - Half Image Half Description */}
+      <section id="about-food" className="py-20 bg-gradient-to-b from-purple-100 via-blue-200 to-white">
+        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
           <div className="md:w-1/2 mb-8 md:mb-0">
             <img
-              src="images/our-story.jpg"
-              alt="Our Story"
+              src="images/about2.jpg"
+              alt="Delicious Dish"
               className="max-w-full h-auto rounded-lg shadow-xl transform hover:scale-105 transition-all duration-300"
             />
           </div>
-          <div className="md:w-1/2 px-4 text-left">
-            <h3 className="text-2xl font-semibold text-gray-900">From Humble Beginnings</h3>
+          <div className="md:w-1/2 text-left px-4">
+            <h3 className="text-2xl font-semibold text-gray-900">Our Cuisine</h3>
             <p className="text-gray-700 mt-4">
-              What started as a small culinary experiment has evolved into a thriving brand. Our commitment to sustainability, local sourcing, and creativity has allowed us to stay true to our roots while continuing to grow.
+              Each dish on our menu is carefully crafted with an emphasis on flavor, freshness, and creativity. From locally sourced ingredients to seasonal specialties, our chefs bring new and exciting culinary experiences to the table.
             </p>
             <p className="text-gray-700 mt-4">
-              Today, we're proud to offer diverse, sustainable, and locally-sourced dishes that cater to every palate. Join us as we continue to push the boundaries of food innovation!
+              We focus on providing a dining experience that is both sustainable and unforgettable. Our menu caters to all tastes, ensuring there's something for everyone, whether you're a meat lover or a vegetarian.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Mission and Vision */}
-      <section
-        id="mission-vision"
-        className="py-20 bg-gradient-to-b from-purple-100 via-blue-200 to-white"
-      >
-        <div className="container mx-auto text-center">
-          <h2 className="text-4xl font-semibold text-gray-900">Our Mission & Vision</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-16">
-            <div className="text-left">
-              <h3 className="text-2xl font-semibold text-gray-900">Mission</h3>
-              <p className="text-gray-700 mt-4">
-                Our mission is to craft exceptional experiences that captivate the senses and foster a sense of community. We aim to make every dining moment a celebration of creativity, sustainability, and flavor.
-              </p>
-            </div>
-            <div className="text-left">
-              <h3 className="text-2xl font-semibold text-gray-900">Vision</h3>
-              <p className="text-gray-700 mt-4">
-                We envision a world where food is a platform for innovation, connection, and positive change. Our goal is to lead the way in sustainability and culinary excellence, creating memorable experiences that inspire and nourish.
-              </p>
-            </div>
+      {/* Location - Half Description Half Image */}
+      <section id="location" className="py-20 px-6 bg-white">
+        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
+          <div className="md:w-1/2 text-left px-4">
+            <h3 className="text-2xl font-semibold text-gray-900">Our Location</h3>
+            <p className="text-gray-700 mt-4">
+              Nestled in the heart of the city, our restaurant offers a cozy and welcoming ambiance. Whether you're looking for a casual meal with friends or a special occasion dinner, our location provides the perfect setting to enjoy a memorable experience.
+            </p>
+            <p className="text-gray-700 mt-4">
+              Conveniently located near popular attractions, we're easily accessible to both locals and visitors alike. Come and experience the warm hospitality and delicious cuisine that make us a top choice in the area.
+            </p>
+          </div>
+          <div className="md:w-1/2 mb-8 md:mb-0">
+            <img
+              src="images/about3.jpg"
+              alt="Restaurant Location"
+              className="max-w-full h-auto rounded-lg shadow-xl transform hover:scale-105 transition-all duration-300"
+            />
           </div>
         </div>
       </section>
 
-      {/* Core Values */}
-      <section id="core-values" className="py-20 bg-white">
+      {/* Meet Our Team */}
+      <section id="our-team" className="py-20 bg-gradient-to-b from-gray-100 via-gray-200 to-white">
         <div className="container mx-auto text-center">
-          <h2 className="text-4xl font-semibold text-gray-900">Our Core Values</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 px-6">
-            <div className="bg-gray-100 p-8 rounded-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
-              <h4 className="text-xl font-semibold text-gray-900">Creativity</h4>
-              <p className="text-gray-600 mt-4">
-                We believe that innovation is key to making every meal special. Our team is constantly experimenting to bring you the freshest and most exciting flavors.
-              </p>
-            </div>
-            <div className="bg-gray-100 p-8 rounded-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
-              <h4 className="text-xl font-semibold text-gray-900">Sustainability</h4>
-              <p className="text-gray-600 mt-4">
-                We're committed to protecting the planet. Our ingredients are sustainably sourced, and we strive to reduce our environmental impact every step of the way.
-              </p>
-            </div>
-            <div className="bg-gray-100 p-8 rounded-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
-              <h4 className="text-xl font-semibold text-gray-900">Quality</h4>
-              <p className="text-gray-600 mt-4">
-                From farm-to-table, we ensure every dish we serve is made with the finest ingredients and the highest standards of quality.
-              </p>
-            </div>
+          <h2 className="text-4xl font-semibold text-gray-900">Meet Our Team</h2>
+          <p className="text-lg text-gray-700 mt-4 max-w-3xl mx-auto">
+            Our team is the heart of our restaurant. Each member brings their own unique expertise to the table, ensuring that you always have the best dining experience.
+          </p>
+        </div>
+        <div className="container mx-auto mt-16 grid grid-cols-1 md:grid-cols-3 gap-12 px-6">
+          <div className="text-center">
+            <img src="images/team1.jpg" alt="Team Member 1" className="rounded-full w-32 h-32 mx-auto mb-4" />
+            <h4 className="text-xl font-semibold text-gray-900">John Doe</h4>
+            <p className="text-gray-600">Chef</p>
+          </div>
+          <div className="text-center">
+            <img src="images/team2.jpg" alt="Team Member 2" className="rounded-full w-32 h-32 mx-auto mb-4" />
+            <h4 className="text-xl font-semibold text-gray-900">Janet Smith</h4>
+            <p className="text-gray-600">Manager</p>
+          </div>
+          <div className="text-center">
+            <img src="images/team3.jpg" alt="Team Member 3" className="rounded-full w-32 h-32 mx-auto mb-4" />
+            <h4 className="text-xl font-semibold text-gray-900">Alex Brown</h4>
+            <p className="text-gray-600">Sous Chef</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Sustainability */}
+      <section id="sustainability" className="py-20 bg-white">
+        <div className="container mx-auto text-center">
+          <h2 className="text-4xl font-semibold text-gray-900">Our Commitment to Sustainability</h2>
+          <p className="text-lg text-gray-700 mt-4 max-w-3xl mx-auto">
+            We're dedicated to minimizing our environmental impact by using locally sourced ingredients, reducing waste, and prioritizing sustainability in everything we do.
+          </p>
+        </div>
+      </section>
+
+      {/* Awards */}
+      <section id="awards" className="py-20 bg-gradient-to-b from-gray-100 via-gray-200 to-white">
+        <div className="container mx-auto text-center">
+          <h2 className="text-4xl font-semibold text-gray-900">Awards & Recognition</h2>
+          <p className="text-lg text-gray-700 mt-4 max-w-3xl mx-auto">
+            We are proud to have received numerous accolades for our culinary creativity, service, and commitment to excellence.
+          </p>
+        </div>
+        <div className="container mx-auto mt-16 flex justify-center">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8 w-full justify-items-center">
+            <img src="images/award1.jpg" alt="Award 1" className="w-full h-auto max-w-[150px] mx-auto" />
+            <img src="images/award2.jpg" alt="Award 2" className="w-full h-auto max-w-[150px] mx-auto" />
+            <img src="images/award3.jpg" alt="Award 3" className="w-full h-auto max-w-[150px] mx-auto" />
+            <img src="images/award4.jpg" alt="Award 4" className="w-full h-auto max-w-[150px] mx-auto" />
           </div>
         </div>
       </section>

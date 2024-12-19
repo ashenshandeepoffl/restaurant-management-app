@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"; // Add missing imports
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
+import About from "./components/About";
 import axios from "axios";
 
 const HomePage = () => {
