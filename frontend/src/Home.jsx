@@ -1,11 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
+import About from "./components/About";
+import axios from "axios";
+import SpecialOffers from "./components/SpecialOffers"; // Import SpecialOffers component
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 
 const HomePage = () => {
+  const [promotions, setPromotions] = useState([]); // State to store promotions
+  const [loading, setLoading] = useState(true); // Loading state
+
+  useEffect(() => {
+    const fetchPromotions = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/promotions");
+        console.log(response.data); // Log to check the response format
+        setPromotions(response.data);
+      } catch (error) {
+        console.error("Error fetching promotions:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPromotions();
+  }, []);
+
   return (
     <div className="text-gray-900 min-h-screen">
+
       <NavBar />
 
       {/* Hero Section */}
@@ -96,7 +121,7 @@ const HomePage = () => {
         us in celebrating our story and the adventures that lie ahead.
       </p>
       <a
-        href="#about"
+        href="./About"
         className="bg-yellow-300 text-white px-6 py-3 rounded-lg text-lg hover:bg-black"
       >
         Learn More
@@ -117,20 +142,8 @@ const HomePage = () => {
 </section>
 
 
-<section id="special-offers" className="py-16 bg-gray-100">
-  <div className="container mx-auto px-4 text-center max-w-4xl">
-    <div className="mb-8">
-      <h2 className="text-xl text-orange-500 uppercase tracking-widest">SPECIAL OFFERS</h2>
-      <h3 className="text-4xl font-semibold text-gray-900 mt-2">Exclusive Deals</h3>
-      <p className="text-gray-600 mt-4 max-w-lg mx-auto">
-        Take advantage of our limited-time offers on your favorite dishes. Don’t miss out on these exclusive deals!
-      </p>
-    </div>
-    {/* need to import the promotions part here */}
-    
-  </div>
-</section>
-
+ {/* Special Offers Section */}
+ <SpecialOffers promotions={promotions} loading={loading} />
 
 
 <section id="great-services" className="py-16 bg-white">
