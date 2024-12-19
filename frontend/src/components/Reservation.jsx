@@ -28,7 +28,8 @@ const ReservationPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
-       <NavBar />
+<NavBar />
+<div className="mt-20"> {/* Add margin to avoid overlap */}
       {/* Reservation Section */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 bg-white rounded shadow-md overflow-hidden mb-12">
         {/* Left Section: Image */}
@@ -164,9 +165,9 @@ const ReservationPage = () => {
 </section>
 
  
-      {/* Footer */}
-      <Footer />
-    </div>
+</div>
+    <Footer />
+  </div>
   );
 };
 
