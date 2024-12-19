@@ -1,8 +1,16 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate(); // Initialize the navigate function
+
+  // Function to handle Login button click
+  const handleLoginClick = () => {
+    navigate("/signup"); // Redirect to the SignUpForm route
+  };
 
   return (
     <nav className="bg-yellow-700 text-white shadow-lg">
@@ -48,7 +56,10 @@ function NavBar() {
 
         {/* Login Button */}
         <div className="flex items-center">
-          <button className="hidden lg:block bg-black text-white px-4 py-2 rounded hover:bg-white">
+          <button
+            className="hidden lg:block bg-black text-white px-4 py-2 rounded hover:bg-white hover:text-black"
+            onClick={handleLoginClick}
+          >
             Login
           </button>
 

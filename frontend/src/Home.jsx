@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
-import About from "./components/About";
 import axios from "axios";
 import SpecialOffers from "./components/SpecialOffers"; // Import SpecialOffers component
 import "slick-carousel/slick/slick.css";
