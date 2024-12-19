@@ -1,7 +1,11 @@
 from flask import Flask
+from flask import Flask, jsonify
+from flask_cors import CORS
+from promotions import get_promotions
 import pymysql
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 # Database connection configuration
 db_config = {
@@ -33,6 +37,12 @@ def initialize_database():
 
 # Initialize the database when the app starts
 initialize_database()
+
+@app.route("/promotions", methods=["GET"])
+def fetch_promotions():
+    """Endpoint to get promotions."""
+    promotions = get_promotions()
+    return jsonify(promotions)
 
 @app.route("/")
 def home():
