@@ -3,6 +3,8 @@ from flask_cors import CORS
 from flask_session import Session
 from promotions import get_promotions
 from user import register_user, login_user
+from feedback import submit_feedback  # Import submit_feedback from feedback.py
+from reservation import submit_reservation  # Import submit_reservation from reservation.py
 import pymysql
 
 app = Flask(__name__)
@@ -103,6 +105,18 @@ def logout():
     """Endpoint to log out a user."""
     session.pop('user', None)
     return jsonify({"message": "Logged out successfully"}), 200
+
+# Submit feedback
+@app.route("/feedback", methods=["POST"])
+def feedback():
+    """Endpoint to submit feedback."""
+    return submit_feedback()
+
+# Submit reservation
+@app.route("/api/reserve", methods=["POST"])
+def reserve():
+    """Endpoint to submit a reservation."""
+    return submit_reservation()
 
 # Home route
 @app.route("/")

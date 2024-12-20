@@ -83,7 +83,7 @@ def login_user():
         cursor = connection.cursor()
 
         # Fetch user by email
-        query = "SELECT email, password, name FROM customers WHERE email = %s"
+        query = "SELECT customer_id, email, password, name FROM customers WHERE email = %s"
         cursor.execute(query, (email,))
         result = cursor.fetchone()
 
@@ -91,11 +91,12 @@ def login_user():
         connection.close()
 
         if result:
-            stored_email, stored_password, stored_name = result
+            customer_id, stored_email, stored_password, stored_name = result
             if check_password_hash(stored_password, password):
-                # Set user email and name in the session
+                # Set user email, customer_id, and name in the session
                 session['user'] = {
                     'email': stored_email,
+                    'customer_id': customer_id,  # Ensure customer_id is set in the session
                     'name': stored_name
                 }
                 return jsonify({"message": "Login successful!"}), 200

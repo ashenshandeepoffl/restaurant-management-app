@@ -3,36 +3,63 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const FeedbackForm = () => {
+const Feedback = () => {
   const [formData, setFormData] = useState({
     rating: 0,
     comment: "",
   });
   const [customerId, setCustomerId] = useState(null);
 
-  // Fetch the customer ID (simulate with localStorage or API call)
+  // Fetch the customer ID from the session API
   useEffect(() => {
-    // Replace this with an API call to fetch the logged-in customer's ID
-    const id = localStorage.getItem("customerId") || 1; // Simulating customer ID = 1
-    setCustomerId(id);
+    const fetchCustomerId = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/session", {
+          withCredentials: true,
+        });
+        if (response.data.user && response.data.user.customer_id) {
+          setCustomerId(response.data.user.customer_id);
+        } else {
+          toast.error("Session expired. Please log in again.");
+        }
+      } catch (error) {
+        console.error("Error fetching customer ID:", error);
+        toast.error("Session expired. Please log in again.");
+      }
+    };
+
+    fetchCustomerId();
   }, []);
 
+  // Handle rating change
   const handleRatingChange = (rating) => {
     setFormData({ ...formData, rating });
   };
 
+  // Handle comment input change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!customerId) {
+      toast.error("You must be logged in to submit feedback.");
+      return;
+    }
+
     try {
-      await axios.post("http://localhost:5000/feedback", {
-        customerId,
-        ...formData,
-      });
+      await axios.post(
+        "http://localhost:5000/feedback",
+        {
+          customerId,
+          ...formData,
+        },
+        { withCredentials: true }
+      );
       toast.success("Feedback submitted successfully!");
       setFormData({ rating: 0, comment: "" }); // Reset the form after submission
     } catch (error) {
@@ -42,12 +69,12 @@ const FeedbackForm = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="mt-20 w-full max-w-lg">
         {/* Feedback Card */}
         <div className="bg-white p-6 md:p-8 rounded-lg shadow-lg">
           {/* Centered Headings */}
-          <div className="text-center">
+          <div className="text-center mb-6">
             <h3 className="text-sm tracking-widest text-gray-500 uppercase">
               Contact Us
             </h3>
@@ -57,7 +84,7 @@ const FeedbackForm = () => {
           </div>
 
           {/* Feedback Form */}
-          <form onSubmit={handleSubmit} className="mt-6">
+          <form onSubmit={handleSubmit}>
             {/* Rating Section */}
             <div className="mb-6">
               <label className="block mb-2 font-semibold text-gray-700">
@@ -105,9 +132,10 @@ const FeedbackForm = () => {
           </form>
         </div>
       </div>
+
       <ToastContainer position="top-center" autoClose={3000} />
     </div>
   );
 };
 
-export default FeedbackForm;
+export default Feedback;
