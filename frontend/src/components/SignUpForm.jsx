@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { checkSession } from "../sessionUtils"; // Import the session check utility
 
 const SignUpForm = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
@@ -13,9 +14,19 @@ const SignUpForm = () => {
     password: "",
     confirmPassword: "",
   });
-
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  // Redirect to the dashboard if the user is already logged in
+  useEffect(() => {
+    const verifySession = async () => {
+      const loggedInUser = await checkSession();
+      if (loggedInUser) {
+        navigate("/dashboard");
+      }
+    };
+    verifySession();
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -62,22 +73,30 @@ const SignUpForm = () => {
     try {
       if (!isLoginMode) {
         // Sign-Up Request
-        const response = await axios.post("http://localhost:5000/register", {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          password: formData.password,
-        });
+        const response = await axios.post(
+          "http://localhost:5000/register",
+          {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            password: formData.password,
+          },
+          { withCredentials: true }
+        );
         toast.success(response.data.message);
         setTimeout(() => {
           toggleMode(); // Switch to login mode after successful registration
         }, 1000);
       } else {
         // Login Request
-        const response = await axios.post("http://localhost:5000/login", {
-          email: formData.email,
-          password: formData.password,
-        });
+        const response = await axios.post(
+          "http://localhost:5000/login",
+          {
+            email: formData.email,
+            password: formData.password,
+          },
+          { withCredentials: true }
+        );
         toast.success(response.data.message);
         setTimeout(() => {
           navigate("/dashboard"); // Redirect to Dashboard after successful login
@@ -99,7 +118,6 @@ const SignUpForm = () => {
       confirmPassword: "",
     });
   };
-
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-yellow-500 via-red-400 to-orange-500 p-4">
@@ -197,16 +215,11 @@ const SignUpForm = () => {
             </div>
           )}
 
-          <div className="mb-4 sm:mb-6">
-            <button
-              type="submit"
-              className="w-full bg-red-500 text-white px-6 py-2 rounded-md shadow-lg hover:bg-red-600 transition-transform transform hover:scale-105"
-            >
-              {isLoginMode ? "Login" : "Sign Up"}
-            </button>
-          </div>
+          <button type="submit" className="w-full bg-red-500 text-white px-6 py-2 rounded-md shadow-lg hover:bg-red-600 transition-transform transform hover:scale-105">
+            {isLoginMode ? "Login" : "Sign Up"}
+          </button>
 
-          <div className="text-center">
+          <div className="text-center mt-4">
             <span className="text-gray-600">
               {isLoginMode ? "New here?" : "Already have an account?"}{" "}
               <button

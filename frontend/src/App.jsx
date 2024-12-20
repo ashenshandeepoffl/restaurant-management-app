@@ -4,22 +4,24 @@ import Home from "./Home";
 import About from "./components/About";
 import SignUpForm from "./components/SignUpForm";
 import Dashboard from "./components/Dashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
     <Router>
-      <div className="App min-h-screen flex flex-col">
-
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/signup" element={<SignUpForm />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-          </Routes>
-        </main>
-
-      </div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/signup" element={<SignUpForm />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
     </Router>
   );
 }

@@ -36,7 +36,7 @@ const SpecialOffers = ({ promotions, loading }) => {
   };
 
   return (
-    <section id="special-offers" className="py-16 bg-gray-50">
+    <section id="special-offers" className="py-16 bg-white">
       <div className="container mx-auto px-4 text-center max-w-6xl">
         <div className="mb-12">
           <h2 className="text-2xl text-orange-500 uppercase tracking-widest">

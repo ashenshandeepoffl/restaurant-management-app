@@ -1,8 +1,10 @@
-from flask import request, jsonify
+from flask import request, jsonify, session
 import pymysql
 from werkzeug.security import generate_password_hash, check_password_hash
 
-# Database connection configuration
+# -----------------------------
+# Database Connection Configuration
+# -----------------------------
 db_config = {
     "host": "localhost",
     "user": "root",
@@ -10,6 +12,9 @@ db_config = {
     "database": "RestaurantAxioraLabs"
 }
 
+# -----------------------------
+# Register a New User
+# -----------------------------
 def register_user():
     """Register a new user and save to the database."""
     try:
@@ -31,6 +36,14 @@ def register_user():
         connection = pymysql.connect(**db_config)
         cursor = connection.cursor()
 
+        # Check if email already exists
+        check_query = "SELECT email FROM customers WHERE email = %s"
+        cursor.execute(check_query, (email,))
+        if cursor.fetchone():
+            cursor.close()
+            connection.close()
+            return jsonify({"error": "Email already exists"}), 400
+
         # Insert user into the database
         query = """
             INSERT INTO customers (name, email, phone, password)
@@ -50,6 +63,9 @@ def register_user():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# -----------------------------
+# Login a User
+# -----------------------------
 def login_user():
     """Authenticate a user and check credentials."""
     try:
@@ -67,7 +83,7 @@ def login_user():
         cursor = connection.cursor()
 
         # Fetch user by email
-        query = "SELECT email, password FROM customers WHERE email = %s"
+        query = "SELECT email, password, name FROM customers WHERE email = %s"
         cursor.execute(query, (email,))
         result = cursor.fetchone()
 
@@ -75,8 +91,13 @@ def login_user():
         connection.close()
 
         if result:
-            stored_email, stored_password = result
+            stored_email, stored_password, stored_name = result
             if check_password_hash(stored_password, password):
+                # Set user email and name in the session
+                session['user'] = {
+                    'email': stored_email,
+                    'name': stored_name
+                }
                 return jsonify({"message": "Login successful!"}), 200
             else:
                 return jsonify({"error": "Invalid password"}), 401
@@ -85,3 +106,20 @@ def login_user():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+# -----------------------------
+# Logout a User
+# -----------------------------
+def logout_user():
+    """Log out the current user."""
+    session.pop('user', None)
+    return jsonify({"message": "Logged out successfully"}), 200
+
+# -----------------------------
+# Check User Session
+# -----------------------------
+def check_user_session():
+    """Check if a user is logged in."""
+    if 'user' in session:
+        return jsonify({"user": session['user']}), 200
+    return jsonify({"error": "Not logged in"}), 401

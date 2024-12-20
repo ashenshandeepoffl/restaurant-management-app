@@ -3,3 +3,7 @@ pymysql==1.1.0
 requests==2.31.0
 
 npm install react-toastify
+npm install axios react-router-dom react-toastify
+pip install Flask Flask-Cors Flask-Session PyMySQL
+pip install Flask-Session
+
