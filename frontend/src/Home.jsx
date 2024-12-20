@@ -7,6 +7,9 @@ import SpecialOffers from "./components/SpecialOffers"; // Import SpecialOffers 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ContactForm from "./components/Contact";
+import TestimonialPage from "./components/TestimonialPage";
+
+
 
 const HomePage = () => {
   const [promotions, setPromotions] = useState([]); // State to store promotions
@@ -201,7 +204,8 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-
+{/* Testimonials Section */}
+<TestimonialPage />
       <ContactForm/>
 
       <NavBar />
