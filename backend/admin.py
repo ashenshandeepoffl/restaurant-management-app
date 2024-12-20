@@ -55,3 +55,33 @@ def add_menu():
             return jsonify({"error": str(e)}), 500
     else:
         return jsonify({"error": "Invalid image file!"}), 400
+
+@admin_bp.route("/view_menu", methods=["GET"])
+def view_menu():
+    try:
+        connection = pymysql.connect(**db_config)
+        cursor = connection.cursor(pymysql.cursors.DictCursor)  # Using DictCursor to fetch as dictionary
+        query = "SELECT * FROM menu_items WHERE is_available = 1"  # Filter for available items
+        cursor.execute(query)
+        menu_items = cursor.fetchall()
+        connection.close()
+        
+        return jsonify(menu_items), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@admin_bp.route("/delete_menu/<int:item_id>", methods=["DELETE"])
+def delete_menu(item_id):
+    try:
+        connection = pymysql.connect(**db_config)
+        cursor = connection.cursor()
+        # SQL query to delete the item
+        query = "DELETE FROM menu_items WHERE item_id = %s"
+        cursor.execute(query, (item_id,))
+        connection.commit()
+        cursor.close()
+        connection.close()
+
+        return jsonify({"message": "Menu item deleted successfully!"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

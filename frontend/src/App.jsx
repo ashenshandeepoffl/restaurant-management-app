@@ -1,7 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './Home';
-import AdminMenu from './admin_menu/admin_menu';
+import AdminMenu from './admin/admin_menu';
+import AdminLandingPage from './admin/admin_landinpage';
+import ViewMenu from './admin/view_menu';
+
 function App() {
   return (
     <Router>
@@ -9,6 +12,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/admin-menu" element={<AdminMenu />} />
+          <Route path="/admin-landinpage" element={<AdminLandingPage />} />
+          <Route path="/view-menu" element={<ViewMenu />} />
         </Routes>
       </div>
     </Router>
