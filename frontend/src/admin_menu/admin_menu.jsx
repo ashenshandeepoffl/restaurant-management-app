@@ -1,61 +1,78 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const AdminMenu = () => {
   const [menuItem, setMenuItem] = useState({
-    item_id: "",
     name: "",
     description: "",
     price: "",
     category: "",
     is_available: false,
-    image_url: "",
+    image: null,
   });
 
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [imagePreview, setImagePreview] = useState(null);
+
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setMenuItem({
-      ...menuItem,
-      [name]: type === "checkbox" ? checked : value,
-    });
+    const { name, value, type, checked, files } = e.target;
+    if (type === "file") {
+      setMenuItem({ ...menuItem, image: files[0] });
+      setImagePreview(URL.createObjectURL(files[0]));
+    } else {
+      setMenuItem({
+        ...menuItem,
+        [name]: type === "checkbox" ? checked : value,
+      });
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Menu Item Added:", menuItem);
-    // Add your logic to save the menu item, such as an API call
-    setMenuItem({
-      item_id: "",
-      name: "",
-      description: "",
-      price: "",
-      category: "",
-      is_available: false,
-      image_url: "",
-    });
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const formData = new FormData();
+      formData.append("name", menuItem.name);
+      formData.append("description", menuItem.description);
+      formData.append("price", menuItem.price);
+      formData.append("category", menuItem.category);
+      formData.append("is_available", menuItem.is_available);
+      formData.append("image", menuItem.image);
+
+      await axios.post("http://localhost:5000/add_menu", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      setMessage("Menu item added successfully!");
+      setMenuItem({
+        name: "",
+        description: "",
+        price: "",
+        category: "",
+        is_available: false,
+        image: null,
+      });
+      setImagePreview(null);
+    } catch (error) {
+      setMessage("Error adding menu item.");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6">Add Menu Item</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="min-h-screen bg-gradient-to-r from-gray-50 to-gray-200 flex items-center justify-center p-4">
+      <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md">
+        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+          Add New Menu Item
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium mb-1" htmlFor="item_id">
-              Item ID
-            </label>
-            <input
-              type="text"
-              id="item_id"
-              name="item_id"
-              value={menuItem.item_id}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-500"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1" htmlFor="name">
+            <label className="block text-sm font-medium mb-2" htmlFor="name">
               Name
             </label>
             <input
@@ -64,13 +81,13 @@ const AdminMenu = () => {
               name="name"
               value={menuItem.name}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-500"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1" htmlFor="description">
+            <label className="block text-sm font-medium mb-2" htmlFor="description">
               Description
             </label>
             <textarea
@@ -78,14 +95,14 @@ const AdminMenu = () => {
               name="description"
               value={menuItem.description}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-500"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 h-28 resize-none"
               required
-            ></textarea>
+            />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1" htmlFor="price">
-              Price
+            <label className="block text-sm font-medium mb-2" htmlFor="price">
+              Price ($)
             </label>
             <input
               type="number"
@@ -93,13 +110,13 @@ const AdminMenu = () => {
               name="price"
               value={menuItem.price}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-500"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1" htmlFor="category">
+            <label className="block text-sm font-medium mb-2" htmlFor="category">
               Category
             </label>
             <input
@@ -108,46 +125,59 @@ const AdminMenu = () => {
               name="category"
               value={menuItem.category}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-500"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2"
               required
             />
           </div>
 
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3">
             <input
               type="checkbox"
               id="is_available"
               name="is_available"
               checked={menuItem.is_available}
               onChange={handleChange}
-              className="mr-2"
+              className="w-5 h-5 text-indigo-600"
             />
-            <label htmlFor="is_available" className="text-sm font-medium">
+            <label htmlFor="is_available" className="text-sm font-medium text-gray-700">
               Available
             </label>
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1" htmlFor="image_url">
-              Image URL
+            <label className="block text-sm font-medium mb-2" htmlFor="image">
+              Image
             </label>
             <input
-              type="url"
-              id="image_url"
-              name="image_url"
-              value={menuItem.image_url}
+              type="file"
+              id="image"
+              name="image"
+              accept="image/*"
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-500"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2"
               required
             />
           </div>
 
+          {imagePreview && (
+            <div className="mb-4">
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="w-full h-40 object-cover rounded-lg shadow-md"
+              />
+            </div>
+          )}
+
           <button
             type="submit"
-            className="w-full bg-indigo-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-600 focus:outline-none focus:ring focus:ring-indigo-500"
+            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold text-lg hover:bg-indigo-700"
+            disabled={loading}
           >
-            Add Menu Item
+            {loading ? "Submitting..." : "Add Menu Item"}
           </button>
+
+          {message && <p className="text-center mt-4">{message}</p>}
         </form>
       </div>
     </div>
