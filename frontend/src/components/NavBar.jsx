@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 
 function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,51 +11,83 @@ function NavBar() {
   };
 
   return (
-    <nav className="bg-yellow-700 text-white shadow-lg">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+    <nav className="bg-yellow-700 text-white shadow-lg fixed w-full z-50">
+      <div className="container mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo */}
-        <div className="flex items-center space-x-2 text-2xl font-bold">
-          <img src="/images/logo.png" alt="Axiora Labs Logo" className="h-10 w-10" />
-          <a href="#home" className="text-[#fff]">Axiora Labs</a>
+        <div className="flex items-center space-x-2 text-2xl font-bold cursor-pointer">
+          <img
+            src="/images/logo.png"
+            alt="Axiora Labs Logo"
+            className="h-10 w-10"
+          />
+          <a href="#home" className="text-white hover:text-gray-200 transition duration-300">
+            Axiora Labs
+          </a>
         </div>
 
         {/* Navigation Links */}
         <ul
           className={`${
             isOpen ? "flex" : "hidden"
-          } flex-col lg:flex-row lg:space-x-6 lg:flex absolute lg:static top-full left-0 w-full lg:w-auto bg-[#10425c] lg:bg-transparent justify-center`}
+          } absolute lg:static top-full left-0 w-full lg:w-auto bg-gray-900 lg:bg-transparent lg:flex lg:flex-row flex-col items-center lg:space-x-6 transition-all duration-300`}
         >
           <li>
-            <a href="#home" className="block px-4 py-2 hover:text-[#c67b5c]">
+            <a
+              href="./"
+              className="block px-4 py-2 text-white hover:text-yellow-400 transition duration-300"
+            >
               Home
             </a>
           </li>
           <li>
-            <a href="/About" className="block px-4 py-2 hover:text-[#c67b5c]">
+            <a
+              href="/About"
+              className="block px-4 py-2 text-white hover:text-yellow-400 transition duration-300"
+            >
               About
             </a>
           </li>
           <li>
-            <a href="#reservation" className="block px-4 py-2 hover:text-[#c67b5c]">
+            <a
+              href="/signup"
+              className="block px-4 py-2 text-white hover:text-yellow-400 transition duration-300"
+            >
               Reservation
             </a>
           </li>
           <li>
-            <a href="#menu" className="block px-4 py-2 hover:text-[#c67b5c]">
+            <a
+              href="#menu"
+              className="block px-4 py-2 text-white hover:text-yellow-400 transition duration-300"
+            >
               Menu
             </a>
           </li>
           <li>
-            <a href="#contact" className="block px-4 py-2 hover:text-[#c67b5c]">
+            <a
+              href="#contact"
+              className="block px-4 py-2 text-white hover:text-yellow-400 transition duration-300"
+            >
               Contact
             </a>
           </li>
+
+          {/* Mobile Login Button */}
+          <li className="lg:hidden mt-4">
+            <button
+              className="bg-black text-white px-6 py-2 rounded-full font-semibold hover:bg-white hover:text-black transition-transform transform hover:scale-105 duration-300 w-full"
+              onClick={handleLoginClick}
+            >
+              Login
+            </button>
+          </li>
         </ul>
 
-        {/* Login Button */}
+        {/* Login Button for Desktop and Hamburger Icon */}
         <div className="flex items-center">
+          {/* Desktop Login Button */}
           <button
-            className="hidden lg:block bg-black text-white px-4 py-2 rounded hover:bg-white hover:text-black"
+            className="hidden lg:block bg-black text-white px-6 py-2 rounded-full font-semibold hover:bg-white hover:text-black transition-transform transform hover:scale-105 duration-300"
             onClick={handleLoginClick}
           >
             Login
@@ -65,7 +95,7 @@ function NavBar() {
 
           {/* Hamburger Icon */}
           <button
-            className="lg:hidden text-white ml-4 focus:outline-none bg-gray-800 p-2 rounded hover:bg-gray-600"
+            className="lg:hidden text-white ml-4 focus:outline-none bg-gray-800 p-2 rounded hover:bg-gray-600 transition duration-300"
             onClick={() => setIsOpen(!isOpen)}
           >
             ☰
