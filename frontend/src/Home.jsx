@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { FaMapMarkerAlt, FaClock, FaEnvelope } from "react-icons/fa";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import axios from "axios";
 import SpecialOffers from "./components/SpecialOffers"; // Import SpecialOffers component
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import ContactForm from "./components/Contact";
 
 const HomePage = () => {
   const [promotions, setPromotions] = useState([]); // State to store promotions
@@ -67,24 +69,38 @@ const HomePage = () => {
       {/* Locate Us Section */}
       <section id="locate-us" className="py-16 bg-yellow-700 text-white">
       <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-around text-center space-y-8 md:space-y-0">
-            <div className="flex flex-col items-center">
-              <h3 className="text-2xl font-semibold mb-2">📍 Locate Us</h3>
-              <p className="text-white">123, Daisy Rd, Manhattan</p>
+        <div className="flex flex-col md:flex-row justify-around text-center space-y-8 md:space-y-0">
+          
+          {/* Locate Us Section */}
+          <div className="flex flex-col items-center">
+            <div className="bg-yellow-600 p-4 rounded-full mb-4">
+              <FaMapMarkerAlt className="text-white text-2xl" />
             </div>
-
-            <div className="flex flex-col items-center">
-              <h3 className="text-2xl font-semibold mb-2">⏰ Open Hours</h3>
-              <p className="text-white">Mon to Fri 10:00 AM - 10:00 PM</p>
-            </div>
-
-            <div className="flex flex-col items-center">
-              <h3 className="text-2xl font-semibold mb-2">📧 Reservation</h3>
-              <p className="text-white">axioralabs@gmail.com</p>
-            </div>
+            <h3 className="text-2xl font-semibold mb-2">Locate Us</h3>
+            <p className="text-white">123, Daisy Rd, Manhattan</p>
           </div>
+
+          {/* Open Hours Section */}
+          <div className="flex flex-col items-center">
+            <div className="bg-yellow-600 p-4 rounded-full mb-4">
+              <FaClock className="text-white text-2xl" />
+            </div>
+            <h3 className="text-2xl font-semibold mb-2">Open Hours</h3>
+            <p className="text-white">Mon to Fri 10:00 AM - 10:00 PM</p>
+          </div>
+
+          {/* Reservation Section */}
+          <div className="flex flex-col items-center">
+            <div className="bg-yellow-600 p-4 rounded-full mb-4">
+              <FaEnvelope className="text-white text-2xl" />
+            </div>
+            <h3 className="text-2xl font-semibold mb-2">Reservation</h3>
+            <p className="text-white">axioralabs@gmail.com</p>
+          </div>
+
         </div>
-      </section>
+      </div>
+    </section>
 
       {/* The Story Section */}
       <section
@@ -186,8 +202,9 @@ const HomePage = () => {
         </div>
       </section>
 
-      
+      <ContactForm/>
 
+      <NavBar />
       {/* Footer */}
       <Footer />
     </div>
