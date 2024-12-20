@@ -65,7 +65,7 @@ function NavBar() {
           </li>
           <li>
             <a
-              href="#contact"
+              href="/contact"
               className="block px-4 py-2 text-white hover:text-yellow-400 transition duration-300"
             >
               Contact
