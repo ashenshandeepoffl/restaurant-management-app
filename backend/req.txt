@@ -7,3 +7,6 @@ npm install axios react-router-dom react-toastify
 pip install Flask Flask-Cors Flask-Session PyMySQL
 pip install Flask-Session
 
+npm install react-slick
+npm install slick-carousel
+npm install react-toastify
