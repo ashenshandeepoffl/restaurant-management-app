@@ -13,48 +13,35 @@ const AdminLandingPage = () => {
     navigate('/admin-menu');
   };
 
+  const handleEditMenu = () => {
+    navigate('/edit-menu');
+  };
+
   return (
-    <div style={styles.container}>
-      <h1 style={styles.heading}>Admin Dashboard</h1>
-      <div style={styles.options}>
-        <button style={styles.button} onClick={handleViewMenu}>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <h1 className="text-4xl font-bold mb-8 text-gray-800">Admin Dashboard</h1>
+      <div className="flex flex-wrap gap-4">
+        <button
+          className="px-6 py-3 text-lg font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+          onClick={handleViewMenu}
+        >
           View Menu
         </button>
-        <button style={styles.button} onClick={handleAddMenu}>
+        <button
+          className="px-6 py-3 text-lg font-medium text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
+          onClick={handleAddMenu}
+        >
           Add Menu
+        </button>
+        <button
+          className="px-6 py-3 text-lg font-medium text-white bg-yellow-500 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-300"
+          onClick={handleEditMenu}
+        >
+          Edit Menu
         </button>
       </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100vh',
-    backgroundColor: '#f5f5f5',
-  },
-  heading: {
-    fontSize: '2rem',
-    marginBottom: '2rem',
-  },
-  options: {
-    display: 'flex',
-    gap: '1rem',
-  },
-  button: {
-    padding: '0.8rem 1.5rem',
-    fontSize: '1rem',
-    cursor: 'pointer',
-    borderRadius: '5px',
-    border: '1px solid #ccc',
-    backgroundColor: '#007BFF',
-    color: '#fff',
-    transition: 'background-color 0.3s',
-  },
 };
 
 export default AdminLandingPage;

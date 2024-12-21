@@ -4,6 +4,7 @@ import Home from './Home';
 import AdminMenu from './admin/admin_menu';
 import AdminLandingPage from './admin/admin_landinpage';
 import ViewMenu from './admin/view_menu';
+import EditMenu from './admin/edit_menu';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/admin-menu" element={<AdminMenu />} />
           <Route path="/admin-landinpage" element={<AdminLandingPage />} />
           <Route path="/view-menu" element={<ViewMenu />} />
+          <Route path="/edit-menu" element={<EditMenu />} />
         </Routes>
       </div>
     </Router>

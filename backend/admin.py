@@ -85,3 +85,33 @@ def delete_menu(item_id):
         return jsonify({"message": "Menu item deleted successfully!"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@admin_bp.route("/edit_menu/<int:id>", methods=["PUT"])
+def edit_menu(id):
+    data = request.get_json()
+    name = data.get("name")
+    description = data.get("description")
+    price = data.get("price")
+    category = data.get("category")
+    is_available = data.get("is_available")
+
+    if not (name and description and price and category):
+        return jsonify({"error": "All fields are required!"}), 400
+
+    try:
+        connection = pymysql.connect(**db_config)
+        cursor = connection.cursor()
+        query = """
+            UPDATE menu_items 
+            SET name = %s, description = %s, price = %s, category = %s, is_available = %s 
+            WHERE item_id = %s
+        """
+        cursor.execute(
+            query, (name, description, price, category, is_available, id)
+        )
+        connection.commit()
+        cursor.close()
+        connection.close()
+        return jsonify({"message": "Menu item updated successfully!"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
