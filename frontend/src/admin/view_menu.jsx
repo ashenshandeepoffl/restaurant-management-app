@@ -7,6 +7,7 @@ const ViewMenu = () => {
   const [filteredItems, setFilteredItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortOrder, setSortOrder] = useState("");
 
   useEffect(() => {
     fetchMenuItems();
@@ -30,10 +31,27 @@ const ViewMenu = () => {
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
-    const filtered = menuItems.filter((item) =>
+    filterItems(query, sortOrder);
+  };
+
+  const handleSortChange = (e) => {
+    const order = e.target.value;
+    setSortOrder(order);
+    filterItems(searchQuery, order);
+  };
+
+  const filterItems = (query, order) => {
+    let items = menuItems.filter((item) =>
       item.name.toLowerCase().includes(query)
     );
-    setFilteredItems(filtered);
+
+    if (order === "low-to-high") {
+      items = items.sort((a, b) => a.price - b.price);
+    } else if (order === "high-to-low") {
+      items = items.sort((a, b) => b.price - a.price);
+    }
+
+    setFilteredItems(items);
   };
 
   const deleteMenuItem = (itemId) => {
@@ -63,15 +81,27 @@ const ViewMenu = () => {
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold text-center mb-8">Menu</h1>
 
-      {/* Search Bar */}
-      <div className="mb-6">
+      {/* Search and Sort Options */}
+      <div className="mb-6 flex justify-between items-center">
+        {/* Search Bar */}
         <input
           type="text"
           placeholder="Search food items..."
           value={searchQuery}
           onChange={handleSearch}
-          className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+          className="w-1/2 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-300"
         />
+
+        {/* Sort Dropdown */}
+        <select
+          value={sortOrder}
+          onChange={handleSortChange}
+          className="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+        >
+          <option value="">Sort By</option>
+          <option value="low-to-high">Price: Low to High</option>
+          <option value="high-to-low">Price: High to Low</option>
+        </select>
       </div>
 
       {/* Menu Items */}
