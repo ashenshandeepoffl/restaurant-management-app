@@ -10,7 +10,7 @@ const About = () => {
       {/* Hero Section */}
       <section
         id="hero"
-        className="relative bg-cover bg-center py-48 text-center"
+        className="relative bg-cover bg-center py-60 text-center"
         style={{ backgroundImage: "url('/images/about1.jpg')" }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
@@ -25,7 +25,7 @@ const About = () => {
       </section>
 
       {/* Our Restaurant */}
-      <section id="our-restaurant" className="py-20 px-6 bg-gray-50">
+      <section id="our-restaurant" className="py-20 px-6 bg-white">
         <div className="container mx-auto text-center">
           <h2 className="text-4xl font-bold text-gray-800 mb-6">Our Restaurant</h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
@@ -41,7 +41,7 @@ const About = () => {
             <img
               src="images/about2.jpg"
               alt="Delicious Dish"
-              className="w-full h-auto rounded-lg shadow-xl transform hover:scale-105 transition-transform duration-300"
+              className="w-100   h-auto rounded-lg shadow-xl transform hover:scale-105 transition-transform duration-300"
             />
           </div>
           <div className="md:w-1/2 text-left">

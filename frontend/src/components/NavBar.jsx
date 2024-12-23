@@ -3,11 +3,20 @@ import { Link, useNavigate } from "react-router-dom";
 
 function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate(); // Initialize the navigate function
+  const navigate = useNavigate();
 
-  // Function to handle Login button click
-  const handleLoginClick = () => {
-    navigate("/signup"); // Redirect to the SignUpForm route
+  // Function to handle smooth scrolling for sections
+  const handleScrollToSection = (sectionId) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    } else {
+      navigate("/"); // Navigate to home if the section doesn't exist on the current page
+      setTimeout(() => {
+        const section = document.getElementById(sectionId);
+        if (section) section.scrollIntoView({ behavior: "smooth" });
+      }, 100); // Wait for navigation to complete before scrolling
+    }
   };
 
   return (
@@ -32,51 +41,51 @@ function NavBar() {
           } absolute lg:static top-full left-0 w-full lg:w-auto bg-gray-900 lg:bg-transparent lg:flex lg:flex-row flex-col items-center lg:space-x-6 transition-all duration-300`}
         >
           <li>
-            <a
-              href="./"
+            <button
+              onClick={() => handleScrollToSection("home")}
               className="block px-4 py-2 text-white hover:text-yellow-400 transition duration-300"
             >
               Home
-            </a>
+            </button>
           </li>
           <li>
-            <a
-              href="/About"
+            <button
+              onClick={() => handleScrollToSection("story")}
               className="block px-4 py-2 text-white hover:text-yellow-400 transition duration-300"
             >
               About
-            </a>
+            </button>
           </li>
           <li>
-            <a
-              href="/signup"
+            <button
+              onClick={() => navigate("/signup")}
               className="block px-4 py-2 text-white hover:text-yellow-400 transition duration-300"
             >
               Reservation
-            </a>
+            </button>
           </li>
           <li>
-            <a
-              href="#menu"
+            <button
+              onClick={() => navigate("/menu")}
               className="block px-4 py-2 text-white hover:text-yellow-400 transition duration-300"
             >
               Menu
-            </a>
+            </button>
           </li>
           <li>
-            <a
-              href="/contact"
+            <button
+              onClick={() => handleScrollToSection("contact")}
               className="block px-4 py-2 text-white hover:text-yellow-400 transition duration-300"
             >
               Contact
-            </a>
+            </button>
           </li>
 
           {/* Mobile Login Button */}
           <li className="lg:hidden mt-4">
             <button
               className="bg-black text-white px-6 py-2 rounded-full font-semibold hover:bg-white hover:text-black transition-transform transform hover:scale-105 duration-300 w-full"
-              onClick={handleLoginClick}
+              onClick={() => navigate("/signup")}
             >
               Login
             </button>
@@ -88,7 +97,7 @@ function NavBar() {
           {/* Desktop Login Button */}
           <button
             className="hidden lg:block bg-black text-white px-6 py-2 rounded-full font-semibold hover:bg-white hover:text-black transition-transform transform hover:scale-105 duration-300"
-            onClick={handleLoginClick}
+            onClick={() => navigate("/signup")}
           >
             Login
           </button>

@@ -51,7 +51,7 @@ const testimonials = [
     name: "Isabella Martinez",
     role: "Food Photographer",
     image: "/images/team1.jpg",
-    feedback: "Not only delicious but beautifully presented dishes. A photographer's dream!",
+    feedback: "Not only delicious but beautifully presented dishes.",
     rating: 5,
   },
 ];
@@ -83,8 +83,8 @@ const TestimonialPage = () => {
   };
 
   return (
-    <section id="testimonials" className="py-16 bg-gray-50">
-      <div className="container mx-auto px-6">
+    <section id="testimonials" className="py-20 bg-white">
+      <div className="container mx-auto px-4">
         {/* Heading Section */}
         <div className="text-center mb-12">
           <p className="text-yellow-600 uppercase tracking-widest font-semibold">
@@ -101,7 +101,7 @@ const TestimonialPage = () => {
         {/* Testimonial Slider */}
         <Slider {...settings}>
           {testimonials.map((testimonial, index) => (
-            <div key={index} className="px-4">
+            <div key={index} className="px-4 mx-auto py-12">
               <div className="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-2xl transition-shadow duration-300">
                 {/* Image */}
                 <div className="w-24 h-24 mx-auto mb-4">
