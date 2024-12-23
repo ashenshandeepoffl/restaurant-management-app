@@ -18,7 +18,10 @@ const AdminLandingPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div>
+      <Navbar />
+
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <h1 className="text-4xl font-bold mb-8 text-gray-800">Admin Dashboard</h1>
       <div className="flex flex-wrap gap-4">
         <button
@@ -40,6 +43,7 @@ const AdminLandingPage = () => {
           Edit Menu
         </button>
       </div>
+    </div>
     </div>
   );
 };

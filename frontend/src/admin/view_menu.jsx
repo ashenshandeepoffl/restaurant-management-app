@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "tailwindcss/tailwind.css";
+import Navbar from "./navbar";
 
 const ViewMenu = () => {
   const [menuItems, setMenuItems] = useState([]);
@@ -78,7 +79,10 @@ const ViewMenu = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div>
+      <Navbar />
+
+      <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold text-center mb-8">Menu</h1>
 
       {/* Search and Sort Options */}
@@ -139,6 +143,7 @@ const ViewMenu = () => {
           <p className="text-center text-gray-500">No items found.</p>
         )}
       </div>
+    </div>
     </div>
   );
 };

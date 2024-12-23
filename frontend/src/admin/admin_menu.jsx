@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Navbar from "./navbar";
 
 const AdminMenu = () => {
   const [menuItem, setMenuItem] = useState({
@@ -65,7 +66,10 @@ const AdminMenu = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-gray-50 to-gray-200 flex items-center justify-center p-4">
+    <div>
+      <Navbar />
+
+      <div className="min-h-screen bg-gradient-to-r from-gray-50 to-gray-200 flex items-center justify-center p-4">
       <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md">
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
           Add New Menu Item
@@ -180,6 +184,7 @@ const AdminMenu = () => {
           {message && <p className="text-center mt-4">{message}</p>}
         </form>
       </div>
+    </div>
     </div>
   );
 };

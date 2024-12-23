@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Navbar from "./navbar";
 
 const EditMenu = () => {
   const [menuItems, setMenuItems] = useState([]);
@@ -68,7 +69,10 @@ const EditMenu = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div>
+      <Navbar />
+
+      <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold text-center mb-8">Edit Menu</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {menuItems.map((item) => (
@@ -154,6 +158,7 @@ const EditMenu = () => {
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 };

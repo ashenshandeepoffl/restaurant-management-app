@@ -5,7 +5,7 @@ import AdminMenu from './admin/admin_menu';
 import AdminLandingPage from './admin/admin_landinpage';
 import ViewMenu from './admin/view_menu';
 import EditMenu from './admin/edit_menu';
-
+import Navbar from './admin/navbar';
 function App() {
   return (
     <Router>
@@ -16,6 +16,7 @@ function App() {
           <Route path="/admin-landinpage" element={<AdminLandingPage />} />
           <Route path="/view-menu" element={<ViewMenu />} />
           <Route path="/edit-menu" element={<EditMenu />} />
+          <Route path="/Navbar" element={<Navbar />} />
         </Routes>
       </div>
     </Router>
