@@ -77,13 +77,13 @@ const Menu = () => {
       </section>
 
       {/* Filter Section */}
-      <section className="py-8 bg-white">
+      <section className="py-8 bg-gray-100">
         <div className="container mx-auto text-center">
-          <div className="flex justify-center space-x-4">
+          <div className="flex flex-wrap justify-center space-x-4">
             <button
               onClick={() => setSelectedCategory("All")}
-              className={`px-4 py-2 rounded-lg font-semibold ${
-                selectedCategory === "All" ? "bg-yellow-600 text-white" : "bg-gray-200 text-gray-800"
+              className={`px-4 py-2 rounded-full font-semibold transition-all duration-300 shadow-md hover:shadow-lg ${
+                selectedCategory === "All" ? "bg-yellow-600 text-white" : "bg-white text-gray-800 border border-gray-300"
               }`}
             >
               All
@@ -92,10 +92,10 @@ const Menu = () => {
               <button
                 key={category.category}
                 onClick={() => setSelectedCategory(category.category)}
-                className={`px-4 py-2 rounded-lg font-semibold ${
+                className={`px-4 py-2 rounded-full font-semibold transition-all duration-300 shadow-md hover:shadow-lg ${
                   selectedCategory === category.category
                     ? "bg-yellow-600 text-white"
-                    : "bg-gray-200 text-gray-800"
+                    : "bg-white text-gray-800 border border-gray-300"
                 }`}
               >
                 {category.category}
@@ -113,11 +113,11 @@ const Menu = () => {
               filteredMenu.map((item, index) => (
                 <div
                   key={index}
-                  className="bg-gray-100 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                  className="bg-white border border-gray-200 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 transform hover:scale-105"
                 >
-                  <h3 className="text-xl font-semibold text-gray-800">{item.name}</h3>
-                  <p className="text-sm text-gray-600">{item.description}</p>
-                  <p className="text-lg font-bold text-yellow-600 mt-2">{item.price}</p>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">{item.name}</h3>
+                  <p className="text-sm text-gray-600 mb-4">{item.description}</p>
+                  <p className="text-lg font-bold text-yellow-600">{item.price}</p>
                 </div>
               ))
             ) : (
