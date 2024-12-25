@@ -121,6 +121,29 @@ const SignUpForm = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-yellow-500 via-red-400 to-orange-500 p-4">
+{/* Back Button */}
+<div className="absolute top-4 left-4">
+  <button
+    onClick={() => navigate("/")}
+    className="flex items-center gap-2 text-white bg-gradient-to-r from-orange-500 to-pink-500 px-5 py-2 rounded-full font-semibold shadow-lg hover:shadow-xl transition-transform transform hover:scale-110"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-5 w-5"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M15 19l-7-7 7-7"
+      />
+    </svg>
+    Back
+  </button>
+      </div>
       <div className="w-full max-w-md bg-white rounded-lg shadow-2xl p-6 sm:p-8 transform hover:scale-105 transition-transform duration-300">
         <h1 className="text-3xl sm:text-4xl font-bold text-center mb-4 sm:mb-6 text-gray-800">
           {isLoginMode ? "Welcome Back!" : "Join Our Family"}
