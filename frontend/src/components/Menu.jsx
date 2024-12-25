@@ -5,6 +5,26 @@ import Footer from "./Footer";
 const Menu = () => {
   const menuItems = [
     {
+      category: "Most Famous",
+      items: [
+        {
+          name: "Signature Garlic Bread",
+          price: "$6.99",
+          description: "Our famous garlic bread with a twist of spices and herbs.",
+        },
+        {
+          name: "Tiramisu Deluxe",
+          price: "$8.99",
+          description: "Classic Italian dessert upgraded with premium coffee and mascarpone.",
+        },
+        {
+          name: "Grilled Chicken Special",
+          price: "$16.99",
+          description: "Our chef's special grilled chicken with a secret sauce.",
+        },
+      ],
+    },
+    {
       category: "Starters",
       items: [
         {
@@ -64,22 +84,22 @@ const Menu = () => {
 
       {/* Hero Section */}
       <section
-        className="relative bg-cover bg-center py-60 text-center"
+        className="relative bg-cover bg-center py-32 md:py-60 text-center"
         style={{ backgroundImage: "url('/images/about1.jpg')" }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
         <div className="relative z-10">
-          <h1 className="text-5xl font-bold text-white mb-4">Our Menu</h1>
-          <p className="text-lg text-white max-w-xl mx-auto">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Our Menu</h1>
+          <p className="text-base md:text-lg text-white max-w-xl mx-auto">
             Explore our variety of delicious dishes made with the freshest ingredients.
           </p>
         </div>
       </section>
 
       {/* Filter Section */}
-      <section className="py-8 bg-gray-100">
+      <section className="py-8 bg-white">
         <div className="container mx-auto text-center">
-          <div className="flex flex-wrap justify-center space-x-4">
+          <div className="flex flex-wrap justify-center gap-4">
             <button
               onClick={() => setSelectedCategory("All")}
               className={`px-4 py-2 rounded-full font-semibold transition-all duration-300 shadow-md hover:shadow-lg ${
@@ -106,14 +126,14 @@ const Menu = () => {
       </section>
 
       {/* Menu Section */}
-      <section className="py-20 px-6">
+      <section className="py-12 md:py-20 px-4 md:px-6 lg:px-8 bg-gray-100">
         <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredMenu.length > 0 ? (
               filteredMenu.map((item, index) => (
                 <div
                   key={index}
-                  className="bg-white border border-gray-200 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 transform hover:scale-105"
+                  className="bg-white border border-gray-200 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-transform transform hover:scale-105"
                 >
                   <h3 className="text-xl font-semibold text-gray-800 mb-2">{item.name}</h3>
                   <p className="text-sm text-gray-600 mb-4">{item.description}</p>
