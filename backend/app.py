@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, session, request
+from flask import Flask, jsonify, session, request, send_from_directory
 from flask_cors import CORS
 from flask_session import Session
 from promotions import get_promotions
@@ -6,6 +6,8 @@ from user import register_user, login_user
 from feedback import submit_feedback  # Import submit_feedback from feedback.py
 from reservation import submit_reservation  # Import submit_reservation from reservation.py
 from menu import get_menu_items  # Import get_menu_items from menu.py
+from admin import admin_bp
+
 import pymysql
 
 app = Flask(__name__)
@@ -63,6 +65,15 @@ initialize_database()
 # -----------------------------
 # Routes
 # -----------------------------
+
+# Serve files from the 'uploads' directory
+@app.route('/uploads/<path:filename>')
+def serve_uploads(filename):
+    """Serve uploaded image files."""
+    return send_from_directory('uploads', filename)
+
+# Register the admin blueprint
+app.register_blueprint(admin_bp)
 
 # Fetch promotions
 @app.route("/promotions", methods=["GET"])
