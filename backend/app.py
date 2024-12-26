@@ -2,12 +2,12 @@ from flask import Flask, jsonify, session, request, send_from_directory
 from flask_cors import CORS
 from flask_session import Session
 from promotions import get_promotions
-from user import register_user, login_user
-from feedback import submit_feedback  # Import submit_feedback from feedback.py
-from reservation import submit_reservation  # Import submit_reservation from reservation.py
-from menu import get_menu_items  # Import get_menu_items from menu.py
+from user import register_user, login_user, logout_user, check_user_session
+from feedback import submit_feedback
+from reservation import submit_reservation
+from menu import get_menu_items
 from admin import admin_bp
-
+from order import order_bp
 import pymysql
 
 app = Flask(__name__)
@@ -72,8 +72,9 @@ def serve_uploads(filename):
     """Serve uploaded image files."""
     return send_from_directory('uploads', filename)
 
-# Register the admin blueprint
+# Register blueprints
 app.register_blueprint(admin_bp)
+app.register_blueprint(order_bp, url_prefix="/api/order")
 
 # Fetch promotions
 @app.route("/promotions", methods=["GET"])

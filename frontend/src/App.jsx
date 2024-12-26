@@ -7,10 +7,10 @@ import Contact from "./components/Contact";
 import SignUpForm from "./components/SignUpForm";
 import Dashboard from "./components/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AdminMenu from './admin/admin_menu';
-import AdminLandingPage from './admin/admin_landinpage';
-import ViewMenu from './admin/view_menu';
-import EditMenu from './admin/edit_menu';
+import AdminMenu from "./admin/admin_menu";
+import AdminLandingPage from "./admin/admin_landinpage";
+import ViewMenu from "./admin/view_menu";
+import EditMenu from "./admin/edit_menu";
 
 function App() {
   return (
@@ -19,20 +19,27 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/menu" element={<Menu />} />
-        <Route path="/Contact" element={<Contact />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/admin-menu" element={<AdminMenu />} />
         <Route path="/admin-landinpage" element={<AdminLandingPage />} />
         <Route path="/view-menu" element={<ViewMenu />} />
         <Route path="/edit-menu" element={<EditMenu />} />
         <Route path="/signup" element={<SignUpForm />} />
+        
+        {/* Protected Routes */}
         <Route
-          path="/dashboard"
+          path="/dashboard/*"
           element={
             <ProtectedRoute>
               <Dashboard />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route path="orders" element={<Dashboard activeTab="orders" />} />
+          <Route path="reservation" element={<Dashboard activeTab="reservation" />} />
+          <Route path="feedback" element={<Dashboard activeTab="feedback" />} />
+          <Route path="special-offers" element={<Dashboard activeTab="specialOffers" />} />
+        </Route>
       </Routes>
     </Router>
   );

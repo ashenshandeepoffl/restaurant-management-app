@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie"; // Install js-cookie: npm install js-cookie
 import { FiShoppingCart } from "react-icons/fi";
-import { FaCartPlus } from "react-icons/fa"; 
+import { FaCartPlus } from "react-icons/fa";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 
@@ -12,17 +13,20 @@ const Menu = () => {
   const [error, setError] = useState(null);
   const [cartVisible, setCartVisible] = useState(false);
 
-  // Load cart from localStorage on initial render
+  // Load cart from cookies or localStorage on initial render
   useEffect(() => {
-    const savedCart = JSON.parse(localStorage.getItem("cart"));
+    const savedCart = Cookies.get("cart")
+      ? JSON.parse(Cookies.get("cart"))
+      : JSON.parse(localStorage.getItem("cart"));
     if (savedCart) setCart(savedCart);
     fetchMenuItems();
   }, []);
 
-  // Save cart to localStorage whenever it updates
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
+// Save cart to cookies and localStorage whenever it updates
+useEffect(() => {
+  localStorage.setItem("cart", JSON.stringify(cart));
+  Cookies.set("cart", JSON.stringify(cart), { expires: 7 }); // Update cookies with new cart
+}, [cart]);
 
   const fetchMenuItems = async () => {
     try {
@@ -84,6 +88,14 @@ const Menu = () => {
     }
   };
 
+  const proceedToOrderPage = () => {
+    if (cart.length === 0) {
+      alert("Your cart is empty. Add items to proceed.");
+      return;
+    }
+    window.location.href = "/dashboard";
+  };
+
   const filteredMenu =
     selectedCategory === "All"
       ? Object.values(menuItems).flat()
@@ -126,7 +138,9 @@ const Menu = () => {
                         className="w-16 h-16 rounded-md object-cover"
                       />
                       <div className="flex-1 ml-4">
-                        <p className="font-semibold text-gray-800">{item.name}</p>
+                        <p className="font-semibold text-gray-800">
+                          {item.name}
+                        </p>
                         <p className="text-sm text-gray-600">{`$${item.price}`}</p>
                         <div className="flex items-center space-x-2 mt-2">
                           <button
@@ -139,7 +153,9 @@ const Menu = () => {
                           >
                             -
                           </button>
-                          <span className="w-6 text-center">{item.quantity}</span>
+                          <span className="w-6 text-center">
+                            {item.quantity}
+                          </span>
                           <button
                             onClick={() =>
                               updateItemQuantity(index, item.quantity + 1)
@@ -171,18 +187,12 @@ const Menu = () => {
                       )
                       .toFixed(2)}`}</p>
                   </div>
-                  <div className="flex justify-between items-center mt-2 text-lg font-bold border-t pt-4">
-                    <p>Total</p>
-                    <p>{`$${cart
-                      .reduce(
-                        (total, item) => total + item.price * item.quantity,
-                        0
-                      )
-                      .toFixed(2)}`}</p>
-                  </div>
                 </div>
-                <button className="mt-4 w-full bg-orange-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-orange-600 transition">
-                  Place Order
+                <button
+                  onClick={proceedToOrderPage}
+                  className="mt-4 w-full bg-orange-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-orange-600 transition"
+                >
+                  Proceed to Order
                 </button>
               </div>
             ) : (

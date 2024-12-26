@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Footer from "./Footer";
 import axios from "axios";
 import SpecialOffers from "./SpecialOffers";
 import Feedback from "./Feedback";
 import ReservationPage from "./Reservation";
+import Order from "./Order";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,7 @@ import {
   FaGift,
   FaComment,
   FaCalendarAlt,
+  FaShoppingCart,
   FaSignOutAlt,
   FaBars,
   FaTimes,
@@ -19,9 +20,10 @@ import {
 
 const Dashboard = () => {
   const [promotions, setPromotions] = useState([]);
+  const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({ email: "", name: "" });
-  const [activeTab, setActiveTab] = useState("specialOffers");
+  const [activeTab, setActiveTab] = useState("orders");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -56,6 +58,22 @@ const Dashboard = () => {
     };
 
     fetchPromotions();
+  }, []);
+
+  // Fetch cart items on component mount
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/cart", {
+          withCredentials: true,
+        });
+        setCart(response.data.cart || []);
+      } catch (error) {
+        console.error("Error fetching cart items:", error);
+      }
+    };
+
+    fetchCart();
   }, []);
 
   // Logout function
@@ -105,39 +123,39 @@ const Dashboard = () => {
           <nav className="flex flex-col space-y-4">
             <button
               className={`flex items-center space-x-2 py-2 px-4 rounded-lg transition-all ${
-                activeTab === "specialOffers" ? "bg-white text-red-500" : "hover:bg-red-700"
+                activeTab === "orders" ? "bg-white text-red-500" : "hover:bg-red-700"
               }`}
-              onClick={() => {
-                setActiveTab("specialOffers");
-                setSidebarOpen(false);
-              }}
+              onClick={() => setActiveTab("orders")}
             >
-              <FaGift />
-              <span>Special Offers</span>
+              <FaShoppingCart />
+              <span>My Orders</span>
+            </button>
+            <button
+              className={`flex items-center space-x-2 py-2 px-4 rounded-lg transition-all ${
+                activeTab === "reservation" ? "bg-white text-red-500" : "hover:bg-red-700"
+              }`}
+              onClick={() => setActiveTab("reservation")}
+            >
+              <FaCalendarAlt />
+              <span>Reservation</span>
             </button>
             <button
               className={`flex items-center space-x-2 py-2 px-4 rounded-lg transition-all ${
                 activeTab === "feedback" ? "bg-white text-red-500" : "hover:bg-red-700"
               }`}
-              onClick={() => {
-                setActiveTab("feedback");
-                setSidebarOpen(false);
-              }}
+              onClick={() => setActiveTab("feedback")}
             >
               <FaComment />
               <span>Feedback</span>
             </button>
             <button
               className={`flex items-center space-x-2 py-2 px-4 rounded-lg transition-all ${
-                activeTab === "reservation" ? "bg-white text-red-500" : "hover:bg-red-700"
+                activeTab === "specialOffers" ? "bg-white text-red-500" : "hover:bg-red-700"
               }`}
-              onClick={() => {
-                setActiveTab("reservation");
-                setSidebarOpen(false);
-              }}
+              onClick={() => setActiveTab("specialOffers")}
             >
-              <FaCalendarAlt />
-              <span>Reservation</span>
+              <FaGift />
+              <span>Special Offers</span>
             </button>
           </nav>
         </div>
@@ -158,13 +176,13 @@ const Dashboard = () => {
             👋 Welcome, {user.name}!
           </h1>
           <p className="text-gray-600 mb-6">Your registered email: {user.email}</p>
-          {activeTab === "specialOffers" && <SpecialOffers promotions={promotions} loading={loading} />}
-          {activeTab === "feedback" && <Feedback />}
+          {activeTab === "orders" && <Order cart={cart} setCart={setCart} />}
           {activeTab === "reservation" && <ReservationPage />}
+          {activeTab === "feedback" && <Feedback />}
+          {activeTab === "specialOffers" && (
+            <SpecialOffers promotions={promotions} loading={loading} />
+          )}
         </main>
-
-        {/* Footer */}
-        <Footer />
       </div>
 
       {/* Toast Notifications */}

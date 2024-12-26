@@ -69,8 +69,8 @@ const Feedback = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="mt-20 w-full max-w-lg">
+    <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="mt-12 mb-12 w-full max-w-lg">
         {/* Feedback Card */}
         <div className="bg-white p-6 md:p-8 rounded-lg shadow-lg">
           {/* Centered Headings */}
