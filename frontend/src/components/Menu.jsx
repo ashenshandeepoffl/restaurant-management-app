@@ -5,26 +5,6 @@ import Footer from "./Footer";
 const Menu = () => {
   const menuItems = [
     {
-      category: "Most Famous",
-      items: [
-        {
-          name: "Signature Garlic Bread",
-          price: "$6.99",
-          description: "Our famous garlic bread with a twist of spices and herbs.",
-        },
-        {
-          name: "Tiramisu Deluxe",
-          price: "$8.99",
-          description: "Classic Italian dessert upgraded with premium coffee and mascarpone.",
-        },
-        {
-          name: "Grilled Chicken Special",
-          price: "$16.99",
-          description: "Our chef's special grilled chicken with a secret sauce.",
-        },
-      ],
-    },
-    {
       category: "Starters",
       items: [
         {
@@ -66,6 +46,21 @@ const Menu = () => {
           name: "Tiramisu",
           price: "$7.99",
           description: "Classic Italian dessert with coffee and mascarpone.",
+        },
+      ],
+    },
+    {
+      category: "Drinks",
+      items: [
+        {
+          name: "Lemonade",
+          price: "$3.99",
+          description: "Refreshing lemonade made with freshly squeezed lemons.",
+        },
+        {
+          name: "Iced Tea",
+          price: "$2.99",
+          description: "Chilled black tea served with a slice of lemon.",
         },
       ],
     },
