@@ -5,6 +5,7 @@ from promotions import get_promotions
 from user import register_user, login_user
 from feedback import submit_feedback  # Import submit_feedback from feedback.py
 from reservation import submit_reservation  # Import submit_reservation from reservation.py
+from menu import get_menu_items  # Import get_menu_items from menu.py
 import pymysql
 
 app = Flask(__name__)
@@ -117,6 +118,15 @@ def feedback():
 def reserve():
     """Endpoint to submit a reservation."""
     return submit_reservation()
+
+# Fetch menu items
+@app.route("/menu/items", methods=["GET"])
+def menu_items():
+    """Endpoint to fetch all available menu items grouped by category."""
+    try:
+        return get_menu_items()
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # Home route
 @app.route("/")
