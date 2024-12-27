@@ -60,15 +60,21 @@ def add_menu():
 def view_menu():
     try:
         connection = pymysql.connect(**db_config)
-        cursor = connection.cursor(pymysql.cursors.DictCursor)  # Using DictCursor to fetch as dictionary
-        query = "SELECT * FROM menu_items WHERE is_available = 1"  # Filter for available items
+        cursor = connection.cursor(pymysql.cursors.DictCursor)  # Fetch as dictionary
+        query = """
+            SELECT 
+                item_id, name, description, price, category, is_available, image_url 
+            FROM menu_items
+        """  # Fetch all fields including image_url
         cursor.execute(query)
         menu_items = cursor.fetchall()
         connection.close()
         
+        # Return the result as JSON
         return jsonify(menu_items), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
     
 @admin_bp.route("/delete_menu/<int:item_id>", methods=["DELETE"])
 def delete_menu(item_id):
