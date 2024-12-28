@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { FaTrash, FaShoppingCart, FaPlus, FaCheck, FaSave } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const OrderPage = () => {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false); // Modal visibility state
+  const navigate = useNavigate();
 
   // Load cart items from backend and cookies on mount
   useEffect(() => {
@@ -165,49 +168,55 @@ const OrderPage = () => {
     window.location.href = "/menu"; // Navigate to menu page
   };
 
-  // Place the order
-  const handlePlaceOrder = async () => {
-    if (cart.length === 0) {
-      alert("Your cart is empty! Add items to place an order.");
-      return;
+  // Confirm save cart and place order
+const confirmPlaceOrder = async (saveCart) => {
+  setShowModal(false); // Close modal
+
+  if (saveCart) {
+    // Automatically save the cart if "Yes" is selected
+    await handleSaveCart();
+  } else {
+    // If "No" is selected, do nothing and return
+    return;
+  }
+
+  // Proceed with placing the order
+  const mappedCart = cart.map((item) => ({
+    id: item.item_id, // Map `item_id` to `id`
+    price: parseFloat(item.price),
+    quantity: parseInt(item.quantity, 10),
+  }));
+
+  setLoading(true); // Set loading state
+  try {
+    const response = await fetch("http://localhost:5000/api/order/place", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ cart: mappedCart }),
+    });
+
+    const result = await response.json();
+    console.log("Response:", result); // Debugging: Log response
+
+    if (response.ok) {
+      Cookies.remove("cart");
+      setCart([]);
+      alert(result.message || "Order placed successfully!");
+    } else {
+      alert(result.error || "Failed to place order.");
     }
+  } catch (error) {
+    console.error("Error placing order:", error);
+    alert("An error occurred while placing the order. Please try again later.");
+  } finally {
+    setLoading(false); // Reset loading state
+  }
+};
 
-    // Map `item_id` to `id` before sending to the backend
-    const mappedCart = cart.map((item) => ({
-      id: item.item_id, // Map `item_id` to `id`
-      price: parseFloat(item.price),
-      quantity: parseInt(item.quantity, 10),
-    }));
-
-    setLoading(true); // Set loading state
-    try {
-      const response = await fetch("http://localhost:5000/api/order/place", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ cart: mappedCart }),
-      });
-
-      const result = await response.json();
-      console.log("Response:", result); // Debugging: Log response
-
-      if (response.ok) {
-        Cookies.remove("cart");
-        setCart([]);
-        alert(result.message || "Order placed successfully!");
-      } else {
-        alert(result.error || "Failed to place order.");
-      }
-    } catch (error) {
-      console.error("Error placing order:", error);
-      alert("An error occurred while placing the order. Please try again later.");
-    } finally {
-      setLoading(false); // Reset loading state
-    }
-  };
-
+  
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-6 flex items-center justify-center gap-2">
@@ -285,7 +294,7 @@ const OrderPage = () => {
               className={`bg-green-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-600 flex items-center gap-2 transition w-full sm:w-auto ${
                 loading ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              onClick={handlePlaceOrder}
+              onClick={() => setShowModal(true)}
               disabled={loading}
             >
               {loading ? "Placing Order..." : <><FaCheck /> Place Order</>}
@@ -311,6 +320,33 @@ const OrderPage = () => {
             >
               <FaTrash /> Clear Cart
             </button>
+          </div>
+        </div>
+      )}
+
+{showModal && (
+  <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+    <div className="bg-white rounded-xl shadow-lg p-8 w-11/12 sm:w-96">
+      <h2 className="text-lg font-bold text-gray-800 mb-4 text-center">
+        Save Your Cart Before Proceeding
+      </h2>
+      <p className="text-gray-600 text-sm mb-6 text-center">
+        Do you want to save your cart for future use or continue without saving?
+      </p>
+      <div className="flex gap-4 justify-center">
+        <button
+          className="bg-green-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-green-500 transition duration-200 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 w-full"
+          onClick={() => confirmPlaceOrder(true)}
+        >
+          Save & Continue
+        </button>
+        <button
+          className="bg-gray-300 text-gray-800 font-semibold px-6 py-3 rounded-lg hover:bg-gray-200 transition duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 w-full"
+          onClick={() => confirmPlaceOrder(false)}
+        >
+          Continue Without Saving
+        </button>
+            </div>
           </div>
         </div>
       )}
