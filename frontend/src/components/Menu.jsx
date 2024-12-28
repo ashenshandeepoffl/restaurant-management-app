@@ -219,42 +219,43 @@ useEffect(() => {
         </div>
       </section>
 
-      {/* Filter Section */}
-      <section className="py-8 bg-white">
-        <div className="container mx-auto text-center">
-          {loading ? (
-            <p className="text-lg font-semibold">Loading...</p>
-          ) : error ? (
-            <p className="text-red-500 font-semibold">{error}</p>
-          ) : (
-            <div className="flex flex-wrap justify-center gap-4">
-              <button
-                onClick={() => setSelectedCategory("All")}
-                className={`px-4 py-2 rounded-full font-semibold transition-all duration-300 shadow-md hover:shadow-lg ${
-                  selectedCategory === "All"
-                    ? "bg-yellow-600 text-white"
-                    : "bg-white text-gray-800 border border-gray-300"
-                }`}
-              >
-                All
-              </button>
-              {Object.keys(menuItems).map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-full font-semibold transition-all duration-300 shadow-md hover:shadow-lg ${
-                    selectedCategory === category
-                      ? "bg-yellow-600 text-white"
-                      : "bg-white text-gray-800 border border-gray-300"
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+{/* Filter Section */}
+<section className="py-8 bg-gray-100">
+  <div className="container mx-auto text-center">
+    {loading ? (
+      <p className="text-lg font-semibold">Loading...</p>
+    ) : error ? (
+      <p className="text-red-500 font-semibold">{error}</p>
+    ) : (
+      <div className="flex flex-wrap justify-center gap-4">
+        <button
+          onClick={() => setSelectedCategory("All")}
+          className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 ${
+            selectedCategory === "All"
+              ? "bg-blue-600 text-white"
+              : "bg-white text-gray-800 border border-gray-300 hover:bg-blue-100"
+          }`}
+        >
+          All
+        </button>
+        {Object.keys(menuItems).map((category) => (
+          <button
+            key={category}
+            onClick={() => setSelectedCategory(category)}
+            className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 ${
+              selectedCategory === category
+                ? "bg-blue-600 text-white"
+                : "bg-white text-gray-800 border border-gray-300 hover:bg-blue-100"
+            }`}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
+
 
       {/* Menu Section */}
       <section className="py-12 md:py-20 px-4 md:px-6 lg:px-8 bg-gray-50">
