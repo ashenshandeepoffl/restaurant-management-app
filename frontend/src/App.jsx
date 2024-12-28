@@ -10,7 +10,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminMenu from "./admin/admin_menu";
 import AdminLandingPage from "./admin/admin_landinpage";
 import ViewMenu from "./admin/view_menu";
-import EditMenu from "./admin/edit_menu";
+import EditMenu from "./admin/edit_menu"; 
+import PaymentPage from "./components/PaymentPage"; 
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/view-menu" element={<ViewMenu />} />
         <Route path="/edit-menu" element={<EditMenu />} />
         <Route path="/signup" element={<SignUpForm />} />
+        <Route path="/payment/:orderId" element={<PaymentPage />} /> 
         
         {/* Protected Routes */}
         <Route

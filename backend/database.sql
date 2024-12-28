@@ -94,12 +94,14 @@ CREATE TABLE IF NOT EXISTS promotions (
     end_date DATE
 );
 
-CREATE TABLE IF NOT EXISTS temporary_cart (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    customer_id INT NOT NULL,
-    item_id INT NOT NULL,
-    quantity INT NOT NULL,
-    price DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
-    FOREIGN KEY (item_id) REFERENCES menu_items(item_id)
+-- Create temp_cart table
+CREATE TABLE IF NOT EXISTS temp_cart (
+    temp_cart_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL, -- Links to customers or users
+    item_id INT NOT NULL, -- Links to menu_items
+    quantity INT NOT NULL CHECK (quantity > 0), -- Quantity of the item
+    price DECIMAL(10, 2) NOT NULL, -- Price of the item
+    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp when the item was added
+    FOREIGN KEY (user_id) REFERENCES customers(customer_id), -- Foreign key to customers
+    FOREIGN KEY (item_id) REFERENCES menu_items(item_id) -- Foreign key to menu_items
 );

@@ -199,15 +199,14 @@ const confirmPlaceOrder = async (saveCart) => {
     });
 
     const result = await response.json();
-    console.log("Response:", result); // Debugging: Log response
-
-    if (response.ok) {
-      Cookies.remove("cart");
-      setCart([]);
-      alert(result.message || "Order placed successfully!");
-    } else {
-      alert(result.error || "Failed to place order.");
-    }
+if (response.ok) {
+  const { order_id } = result; // Ensure backend returns "order_id"
+  Cookies.remove("cart");
+  alert(result.message || "Order placed successfully!");
+  navigate(`/payment/${order_id}`); // Redirect to PaymentPage with order_id
+} else {
+  alert(result.error || "Failed to place order.");
+}
   } catch (error) {
     console.error("Error placing order:", error);
     alert("An error occurred while placing the order. Please try again later.");
