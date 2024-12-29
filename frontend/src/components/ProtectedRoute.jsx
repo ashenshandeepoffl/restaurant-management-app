@@ -15,7 +15,7 @@ const ProtectedRoute = ({ children }) => {
     verifySession();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <div className="text-center mt-10">Loading...</div>;
 
   return user ? children : <Navigate to="/signup" />;
 };

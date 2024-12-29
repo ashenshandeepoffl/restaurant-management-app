@@ -57,14 +57,24 @@ def place_order():
 @order_bp.route("/<int:order_id>", methods=["GET"])
 def get_order(order_id):
     try:
+        # Ensure the user is logged in
+        if 'user' not in session:
+            return jsonify({"error": "Unauthorized access"}), 401
+
+        # Get customer_id from the session
+        customer_id = session['user']['customer_id']
+
+        # Connect to the database
         connection = pymysql.connect(**db_config)
         with connection.cursor(pymysql.cursors.DictCursor) as cursor:
-            cursor.execute("SELECT * FROM orders WHERE order_id = %s", (order_id,))
+            # Verify that the order belongs to the logged-in user
+            cursor.execute("SELECT * FROM orders WHERE order_id = %s AND customer_id = %s", (order_id, customer_id))
             order = cursor.fetchone()
 
             if not order:
-                return jsonify({"error": "Order not found"}), 404
+                return jsonify({"error": "Order not found or unauthorized"}), 404
 
+            # Fetch order items
             cursor.execute("""
                 SELECT oi.item_id, oi.quantity, oi.price, mi.name
                 FROM order_items oi
@@ -73,10 +83,16 @@ def get_order(order_id):
             """, (order_id,))
             items = cursor.fetchall()
 
-        return jsonify({"order_id": order_id, "total_amount": order["total_amount"], "items": items}), 200
+        # Return the order details
+        return jsonify({
+            "order_id": order_id,
+            "total_amount": order["total_amount"],
+            "items": items,
+        }), 200
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        print("Error:", e)
+        return jsonify({"error": "An unexpected error occurred"}), 500
+
     finally:
         connection.close()
-

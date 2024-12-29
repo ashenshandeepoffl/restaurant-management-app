@@ -17,16 +17,18 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/signup" element={<SignUpForm />} />
+
+        {/* Admin Routes */}
         <Route path="/admin-menu" element={<AdminMenu />} />
         <Route path="/admin-landinpage" element={<AdminLandingPage />} />
         <Route path="/view-menu" element={<ViewMenu />} />
-        <Route path="/edit-menu" element={<EditMenu />} />
-        <Route path="/signup" element={<SignUpForm />} />
-        <Route path="/payment/:orderId" element={<PaymentPage />} /> 
+        <Route path="/edit-menu" element={<EditMenu />} /> 
         
         {/* Protected Routes */}
         <Route
@@ -42,6 +44,17 @@ function App() {
           <Route path="feedback" element={<Dashboard activeTab="feedback" />} />
           <Route path="special-offers" element={<Dashboard activeTab="specialOffers" />} />
         </Route>
+
+        {/* Protected Payment Route */}
+        <Route
+          path="/payment/:orderId"
+          element={
+            <ProtectedRoute>
+              <PaymentPage />
+            </ProtectedRoute>
+          }
+        />
+        
       </Routes>
     </Router>
   );
