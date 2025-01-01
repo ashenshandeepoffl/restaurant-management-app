@@ -29,7 +29,7 @@ function NavBar() {
             alt="Axiora Labs Logo"
             className="h-10 w-10"
           />
-          <a href="#home" className="text-white hover:text-gray-200 transition duration-300">
+          <a href="/" className="text-white hover:text-gray-200 transition duration-300">
             Axiora Labs
           </a>
         </div>
