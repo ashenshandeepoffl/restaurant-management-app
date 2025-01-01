@@ -9,8 +9,8 @@ from menu import get_menu_items
 from admin import admin_bp
 from order import order_bp
 from cart import cart_bp
-from testimonial import testimonial_bp
 from menu import menu_bp
+from testimonial import testimonial_bp
 import pymysql
 
 app = Flask(__name__)

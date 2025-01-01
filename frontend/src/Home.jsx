@@ -10,7 +10,6 @@ import ContactForm from "./components/Contact";
 import TestimonialPage from "./components/TestimonialPage";
 import PopularDishes from "./components/PopularDishes";
 
-
 const HomePage = () => {
   const [promotions, setPromotions] = useState([]); // State to store promotions
   const [loading, setLoading] = useState(true); // Loading state
@@ -139,9 +138,7 @@ const HomePage = () => {
 </section>
 
 {/* Popular Dishes Section */}
-<section className="pt-20">
-        <PopularDishes />
-      </section>
+<PopularDishes />
 
 {/* Special Offers Section */}
 <SpecialOffers promotions={promotions} loading={loading} />

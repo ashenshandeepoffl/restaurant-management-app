@@ -29,27 +29,37 @@ def get_menu_items():
     finally:
         connection.close()
 
-@menu_bp.route("/popular-dishes", methods=["GET"])
+# Get popular dishes
+@menu_bp.route("/menu/popular-dishes", methods=["GET"])
 def get_popular_dishes():
-    """Fetch popular dishes."""
-    connection = None
+    """
+    Fetch popular dishes from the database.
+    Popular dishes are categorized and returned for display.
+    """
+    connection = pymysql.connect(**db_config)
     try:
-        connection = pymysql.connect(**db_config)
         with connection.cursor(pymysql.cursors.DictCursor) as cursor:
             cursor.execute("""
-                SELECT item_id, name, description, price, image_url
+                SELECT item_id, name, description, price, image_url, category
                 FROM menu_items
                 WHERE is_available = TRUE
-                ORDER BY RAND()
+                ORDER BY RAND() -- Randomly select dishes as there is no popularity column
                 LIMIT 10
             """)
             popular_dishes = cursor.fetchall()
 
-        return jsonify(popular_dishes), 200
+        categorized_dishes = {}
+        for dish in popular_dishes:
+            category = dish.get("category", "Uncategorized")  # Use "Uncategorized" if category is missing
+            if category not in categorized_dishes:
+                categorized_dishes[category] = []
+            categorized_dishes[category].append(dish)
+
+        return jsonify(categorized_dishes), 200
     except pymysql.MySQLError as e:
         return jsonify({"error": f"Database error: {e}"}), 500
     except Exception as e:
         return jsonify({"error": f"Server error: {e}"}), 500
     finally:
-        if connection:
-            connection.close()      
+        connection.close()
+
