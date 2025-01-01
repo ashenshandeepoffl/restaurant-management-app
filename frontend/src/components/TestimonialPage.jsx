@@ -85,7 +85,7 @@ const TestimonialPage = () => {
           {testimonials.map((testimonial) => (
             <div key={testimonial.feedback_id} className="p-4 py-12">
               <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center transition-all transform hover:scale-105 hover:shadow-xl">
-                <div className="bg-yellow-500 text-white w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                <div className="bg-yellow-600 text-white w-16 h-16 rounded-full flex items-center justify-center mb-4">
                   <span className="text-2xl font-bold">{testimonial.rating}</span>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
