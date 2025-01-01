@@ -9,6 +9,7 @@ from menu import get_menu_items
 from admin import admin_bp
 from order import order_bp
 from cart import cart_bp
+from testimonial import testimonial_bp
 import pymysql
 
 app = Flask(__name__)
@@ -77,6 +78,7 @@ def serve_uploads(filename):
 app.register_blueprint(admin_bp)
 app.register_blueprint(order_bp, url_prefix="/api/order")
 app.register_blueprint(cart_bp, url_prefix="/api/cart")
+app.register_blueprint(testimonial_bp, url_prefix="/api")
 
 # Fetch promotions
 @app.route("/promotions", methods=["GET"])

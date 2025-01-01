@@ -1,64 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
-import { FaStar } from "react-icons/fa";
+import axios from "axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-const testimonials = [
-  {
-    name: "Ethan Miller",
-    role: "Food Critic",
-    image: "/images/team1.jpg",
-    feedback: "The food here is absolutely amazing! Each dish is a masterpiece.",
-    rating: 5,
-  },
-  {
-    name: "Emily Johnson",
-    role: "Frequent Diner",
-    image: "/images/team2.jpg",
-    feedback: "The ambiance and service are top-notch. Always a pleasure dining here.",
-    rating: 5,
-  },
-  {
-    name: "Olivia Carter",
-    role: "Gourmet Blogger",
-    image: "/images/team3.jpg",
-    feedback: "Every meal is a delight, and the flavors are perfectly balanced.",
-    rating: 5,
-  },
-  {
-    name: "Wyatt Turner",
-    role: "Chef",
-    image: "/images/team1.jpg",
-    feedback: "I appreciate the attention to detail in every dish. Truly inspiring!",
-    rating: 5,
-  },
-  {
-    name: "Sophia White",
-    role: "Event Planner",
-    image: "/images/team2.jpg",
-    feedback: "Great spot for events. The staff makes everything seamless.",
-    rating: 5,
-  },
-  {
-    name: "James Lee",
-    role: "Restaurant Enthusiast",
-    image: "/images/team3.jpg",
-    feedback: "I love trying new dishes here. The menu never disappoints.",
-    rating: 5,
-  },
-  {
-    name: "Isabella Martinez",
-    role: "Food Photographer",
-    image: "/images/team1.jpg",
-    feedback: "Not only delicious but beautifully presented dishes.",
-    rating: 5,
-  },
-];
+import { FaStar } from "react-icons/fa";
 
 const TestimonialPage = () => {
-  // Slider settings
-  const settings = {
+  const [testimonials, setTestimonials] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/testimonials");
+        setTestimonials(response.data);
+      } catch (error) {
+        console.error("Error fetching testimonials:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
+
+  const sliderSettings = {
     dots: true,
     infinite: true,
     speed: 500,
@@ -82,59 +48,59 @@ const TestimonialPage = () => {
     ],
   };
 
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <FaStar
+          key={i}
+          className={`text-xl ${i <= rating ? "text-yellow-500" : "text-gray-300"}`}
+        />
+      );
+    }
+    return stars;
+  };
+
+  if (loading) {
+    return <p className="text-center text-lg text-gray-500">Loading testimonials...</p>;
+  }
+
+  if (!testimonials.length) {
+    return <p className="text-center text-lg text-gray-500">No testimonials available.</p>;
+  }
+
   return (
-    <section id="testimonials" className="py-20 bg-white">
+    <div className="bg-gray-50 py-16">
       <div className="container mx-auto px-4">
-        {/* Heading Section */}
-        <div className="text-center mb-12">
-          <p className="text-yellow-600 uppercase tracking-widest font-semibold">
-            Testimonials
-          </p>
-          <h2 className="text-4xl font-bold text-gray-800 mt-2">
-            What Our Customers Say
-          </h2>
-          <p className="text-gray-600 mt-4 max-w-xl mx-auto">
-            Our customers love us, and we love them! Here’s what they have to say about their experiences.
-          </p>
-        </div>
-
-        {/* Testimonial Slider */}
-        <Slider {...settings}>
-          {testimonials.map((testimonial, index) => (
-            <div key={index} className="px-4 mx-auto py-12">
-              <div className="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-2xl transition-shadow duration-300">
-                {/* Image */}
-                <div className="w-24 h-24 mx-auto mb-4">
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    className="w-full h-full object-cover rounded-full border-4 border-yellow-500"
-                  />
+        <h2 className="text-yellow-500 text-sm font-semibold uppercase text-center mb-2 tracking-wide">
+          Testimonials
+        </h2>
+        <h2 className="text-4xl font-bold text-gray-800 text-center mb-4">
+          What Our Customers Say
+        </h2>
+        <p className="text-center text-lg text-gray-600 mb-10 max-w-2xl mx-auto">
+          Our customers love us, and we love them! Here’s what they have to say about their experiences.
+        </p>
+        <Slider {...sliderSettings}>
+          {testimonials.map((testimonial) => (
+            <div key={testimonial.feedback_id} className="p-4">
+              <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center transition-all transform hover:scale-105 hover:shadow-xl">
+                <div className="bg-yellow-500 text-white w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                  <span className="text-2xl font-bold">{testimonial.rating}</span>
                 </div>
-
-                {/* Name and Role */}
-                <h3 className="text-xl font-semibold text-gray-800">
-                  {testimonial.name}
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  {testimonial.customer_name}
                 </h3>
-                <p className="text-sm text-yellow-600 mb-4">{testimonial.role}</p>
-
-                {/* Star Rating */}
-                <div className="flex justify-center mb-4">
-                  {Array(testimonial.rating)
-                    .fill()
-                    .map((_, i) => (
-                      <FaStar key={i} className="text-yellow-500 text-lg" />
-                    ))}
-                </div>
-
-                {/* Feedback */}
-                <p className="text-gray-600 italic">{testimonial.feedback}</p>
+                <p className="text-gray-600 text-center mb-4 italic">
+                  "{testimonial.comment}"
+                </p>
+                <div className="flex justify-center">{renderStars(testimonial.rating)}</div>
               </div>
             </div>
           ))}
         </Slider>
       </div>
-    </section>
+    </div>
   );
 };
 
