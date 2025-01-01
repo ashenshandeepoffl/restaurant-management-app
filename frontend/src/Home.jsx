@@ -8,7 +8,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ContactForm from "./components/Contact";
 import TestimonialPage from "./components/TestimonialPage";
-
+import PopularDishes from "./components/PopularDishes";
 
 
 const HomePage = () => {
@@ -139,19 +139,9 @@ const HomePage = () => {
 </section>
 
 {/* Popular Dishes Section */}
-<section id="popular-dishes" className="py-20 bg-white">
-  <div className="container mx-auto px-6 text-center max-w-4xl">
-    <h2 className="text-xl text-yellow-600 uppercase tracking-widest mb-4">
-      Menu
-    </h2>
-    <h3 className="text-4xl font-semibold text-gray-900 mb-6">
-      Popular Dishes
-    </h3>
-    <p className="text-lg text-gray-700">
-      Coming soon...
-    </p>
-  </div>
-</section>
+<section className="pt-20">
+        <PopularDishes />
+      </section>
 
 {/* Special Offers Section */}
 <SpecialOffers promotions={promotions} loading={loading} />

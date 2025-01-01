@@ -28,3 +28,28 @@ def get_menu_items():
         return jsonify({"error": str(e)}), 500
     finally:
         connection.close()
+
+@menu_bp.route("/popular-dishes", methods=["GET"])
+def get_popular_dishes():
+    """Fetch popular dishes."""
+    connection = None
+    try:
+        connection = pymysql.connect(**db_config)
+        with connection.cursor(pymysql.cursors.DictCursor) as cursor:
+            cursor.execute("""
+                SELECT item_id, name, description, price, image_url
+                FROM menu_items
+                WHERE is_available = TRUE
+                ORDER BY RAND()
+                LIMIT 10
+            """)
+            popular_dishes = cursor.fetchall()
+
+        return jsonify(popular_dishes), 200
+    except pymysql.MySQLError as e:
+        return jsonify({"error": f"Database error: {e}"}), 500
+    except Exception as e:
+        return jsonify({"error": f"Server error: {e}"}), 500
+    finally:
+        if connection:
+            connection.close()      

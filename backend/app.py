@@ -10,6 +10,7 @@ from admin import admin_bp
 from order import order_bp
 from cart import cart_bp
 from testimonial import testimonial_bp
+from menu import menu_bp
 import pymysql
 
 app = Flask(__name__)
@@ -79,6 +80,7 @@ app.register_blueprint(admin_bp)
 app.register_blueprint(order_bp, url_prefix="/api/order")
 app.register_blueprint(cart_bp, url_prefix="/api/cart")
 app.register_blueprint(testimonial_bp, url_prefix="/api")
+app.register_blueprint(menu_bp, url_prefix="/menu")
 
 # Fetch promotions
 @app.route("/promotions", methods=["GET"])

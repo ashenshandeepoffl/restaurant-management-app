@@ -70,7 +70,7 @@ const TestimonialPage = () => {
   }
 
   return (
-    <div className="bg-gray-50 py-16">
+    <div className="bg-white py-16">
       <div className="container mx-auto px-4">
         <h2 className="text-yellow-500 text-sm font-semibold uppercase text-center mb-2 tracking-wide">
           Testimonials
@@ -83,7 +83,7 @@ const TestimonialPage = () => {
         </p>
         <Slider {...sliderSettings}>
           {testimonials.map((testimonial) => (
-            <div key={testimonial.feedback_id} className="p-4">
+            <div key={testimonial.feedback_id} className="p-4 py-12">
               <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center transition-all transform hover:scale-105 hover:shadow-xl">
                 <div className="bg-yellow-500 text-white w-16 h-16 rounded-full flex items-center justify-center mb-4">
                   <span className="text-2xl font-bold">{testimonial.rating}</span>
