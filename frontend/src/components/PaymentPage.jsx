@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 const PaymentPage = () => {
-  const { orderId } = useParams(); // Get orderId from the URL
+  const { orderId } = useParams();
   const [cartItems, setCartItems] = useState([]);
   const [total, setTotal] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState("cash");
   const [loading, setLoading] = useState(false);
+  const [pickupMethod, setPickupMethod] = useState("home");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,10 +35,9 @@ const PaymentPage = () => {
         const result = await response.json();
         console.log("Fetched Order Items:", result);
 
-        // Sanitize the data
         const sanitizedItems = result.items.map((item) => ({
           ...item,
-          price: parseFloat(item.price) || 0, // Ensure price is numeric
+          price: parseFloat(item.price) || 0,
         }));
 
         setCartItems(sanitizedItems);
@@ -52,7 +52,7 @@ const PaymentPage = () => {
       }
     };
 
-    fetchOrderItems(); // Invoke the function
+    fetchOrderItems();
   }, [orderId, navigate]);
 
   const handlePayment = async () => {
@@ -80,7 +80,7 @@ const PaymentPage = () => {
       console.log("Payment Success Response:", result);
 
       alert(result.message || "Payment successful!");
-      navigate("/"); // Redirect to homepage or success page
+      navigate("/");
     } catch (error) {
       console.error("Payment error:", error);
       alert("Payment failed. Please try again later.");
@@ -90,13 +90,15 @@ const PaymentPage = () => {
   };
 
   return (
-    <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-4xl font-bold text-center text-gray-900 mb-8">Payment Page</h1>
-  
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <h1 className="text-4xl font-bold text-center text-gray-900 mb-8 tracking-wide">
+      Checkout Page
+      </h1>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Left Section: Order Summary */}
-        <div className="lg:col-span-2 bg-gradient-to-br from-white to-gray-100 shadow-lg rounded-lg p-8">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">Order Summary</h2>
+        <div className="bg-white shadow-lg rounded-lg p-6 lg:p-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">Order Summary</h2>
           {loading ? (
             <p className="text-center text-gray-500">Loading order items...</p>
           ) : cartItems.length === 0 ? (
@@ -106,104 +108,193 @@ const PaymentPage = () => {
               {cartItems.map((item, index) => (
                 <li
                   key={index}
-                  className="flex justify-between items-center border-b pb-4 space-y-4 sm:space-y-0"
+                  className="flex justify-between items-center border-b pb-4"
                 >
                   <div>
-                    <p className="font-semibold text-gray-800 text-lg">{item.name}</p>
-                    <p className="text-sm text-gray-600">
-                      {item.quantity} x ${item.price.toFixed(2)}
-                    </p>
+                    <p className="font-semibold text-lg text-gray-900">{item.name}</p>
+                    <p className="text-gray-500">{item.quantity} x ${item.price.toFixed(2)}</p>
                   </div>
-                  <p className="font-bold text-lg text-gray-900">
+                  <p className="text-gray-800 font-bold">
                     ${(item.price * item.quantity).toFixed(2)}
                   </p>
                 </li>
               ))}
             </ul>
           )}
-          <div className="mt-8">
-            <h3 className="text-2xl font-bold text-gray-800">
+          <div className="mt-6 border-t pt-4">
+            <h3 className="text-lg font-bold text-gray-800 flex justify-between">
               Total: <span className="text-green-600">${total}</span>
             </h3>
           </div>
         </div>
-  
+
         {/* Right Section: Payment Options */}
-        <div className="bg-white shadow-xl rounded-lg p-8">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">Payment Options</h2>
-  
-          <div className="border border-gray-200 rounded-lg overflow-hidden">
-            {/* Tab-like buttons for payment methods */}
-            <div className="flex border-b">
+        <div className="bg-gradient-to-br from-gray-50 to-gray-100 shadow-lg rounded-lg p-6 lg:p-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">Payment Options</h2>
+
+          {/* Pickup Method */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Order Pick-Up Method</h3>
+            <div className="flex space-x-4">
               <button
-                onClick={() => setPaymentMethod("cash")}
-                className={`flex-1 text-center py-3 font-medium ${
-                  paymentMethod === "cash"
-                    ? "bg-blue-100 text-blue-600"
-                    : "bg-gray-50 text-gray-600"
+                onClick={() => setPickupMethod("home")}
+                className={`w-1/2 py-3 rounded-lg text-center font-medium transition-all duration-300 shadow-md ${
+                  pickupMethod === "home"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                 }`}
               >
-                Cash on Delivery
+                Home Delivery
               </button>
               <button
-                onClick={() => setPaymentMethod("online")}
-                className={`flex-1 text-center py-3 font-medium ${
-                  paymentMethod === "online"
-                    ? "bg-blue-100 text-blue-600"
-                    : "bg-gray-50 text-gray-600"
+                onClick={() => setPickupMethod("store")}
+                className={`w-1/2 py-3 rounded-lg text-center font-medium transition-all duration-300 shadow-md ${
+                  pickupMethod === "store"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                 }`}
               >
-                Online Payment
+                Store Pick-Up
               </button>
             </div>
-  
-            {/* Payment form */}
-            <div className="p-6 space-y-4">
-              {paymentMethod === "online" ? (
+          </div>
+
+          {pickupMethod === "home" && (
+            <div className="border border-gray-200 rounded-lg p-6 mb-6">
+              <h3 className="text-lg font-bold text-gray-800 mb-4">Delivery Address</h3>
+              <input
+                type="text"
+                placeholder="Full Name"
+                className="w-full border border-gray-300 rounded-md p-3 mb-4 focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+              <input
+                type="text"
+                placeholder="Address"
+                className="w-full border border-gray-300 rounded-md p-3 mb-4 focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+              <input
+                type="text"
+                placeholder="City"
+                className="w-full border border-gray-300 rounded-md p-3 mb-4 focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+              <input
+                type="text"
+                placeholder="Phone Number"
+                className="w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+            </div>
+          )}
+
+          {/* Payment Method */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Payment Method</h3>
+            <div className="flex space-x-4 mb-6">
+              {pickupMethod === "home" && (
+                <button
+                  onClick={() => setPaymentMethod("cash")}
+                  className={`w-1/2 py-3 rounded-lg text-center font-medium transition-all duration-300 shadow-md ${
+                    paymentMethod === "cash"
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  }`}
+                >
+                  Cash on Delivery
+                </button>
+              )}
+              {pickupMethod === "store" && (
                 <>
-                  <input
-                    type="text"
-                    placeholder="Card Number"
-                    className="w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-blue-500 outline-none"
-                  />
-                  <div className="flex space-x-4">
-                    <input
-                      type="text"
-                      placeholder="MM / YY"
-                      className="flex-1 border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
-                    <input
-                      type="text"
-                      placeholder="CVC"
-                      className="flex-1 border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="Cardholder Name"
-                    className="w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-blue-500 outline-none"
-                  />
+                  <button
+                    onClick={() => setPaymentMethod("cash")}
+                    className={`w-1/2 py-3 rounded-lg text-center font-medium transition-all duration-300 shadow-md ${
+                      paymentMethod === "cash"
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    }`}
+                  >
+                    Pickup Payment
+                  </button>
+                  <button
+                    onClick={() => setPaymentMethod("online")}
+                    className={`w-1/2 py-3 rounded-lg text-center font-medium transition-all duration-300 shadow-md ${
+                      paymentMethod === "online"
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    }`}
+                  >
+                    Online Payment
+                  </button>
                 </>
-              ) : (
-                <p className="text-gray-600">
-                  You have selected <strong>Cash on Delivery</strong>. Please ensure you
-                  have the exact amount ready.
-                </p>
+              )}
+              {pickupMethod === "home" && (
+                <button
+                  onClick={() => setPaymentMethod("online")}
+                  className={`w-1/2 py-3 rounded-lg text-center font-medium transition-all duration-300 shadow-md ${
+                    paymentMethod === "online"
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  }`}
+                >
+                  Online Payment
+                </button>
               )}
             </div>
           </div>
-  
+
+          {paymentMethod === "online" && (
+            <div className="space-y-4">
+              <input
+                type="text"
+                placeholder="Card Number"
+                className="w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+              <div className="flex space-x-4">
+                <input
+                  type="text"
+                  placeholder="MM / YY"
+                  className="flex-1 border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-blue-500 outline-none"
+                />
+                <input
+                  type="text"
+                  placeholder="CVC"
+                  className="flex-1 border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-blue-500 outline-none"
+                />
+              </div>
+              <input
+                type="text"
+                placeholder="Cardholder Name"
+                className="w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+            </div>
+          )}
+
+          {pickupMethod === "store" && paymentMethod === "cash" && (
+            <div className="p-4 bg-yellow-50 border border-yellow-300 rounded-lg">
+              <p className="text-gray-700 text-sm">
+                You have selected <strong>Pickup Payment</strong>. Please proceed to the store for payment.
+              </p>
+            </div>
+          )}
+
+          {pickupMethod === "home" && paymentMethod === "cash" && (
+            <div className="p-4 bg-yellow-50 border border-yellow-300 rounded-lg mt-4">
+              <p className="text-gray-700 text-sm">
+                You have selected <strong>Cash on Delivery</strong>. The delivery person will collect the payment at the time of delivery.
+              </p>
+            </div>
+          )}
+
           <button
             onClick={handlePayment}
-            className="mt-6 w-full bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-green-700 transition ease-in-out duration-300 disabled:opacity-50"
+            className="mt-6 w-full bg-green-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-green-600 transition ease-in-out duration-300 disabled:opacity-50"
             disabled={loading}
           >
             {loading ? "Processing Payment..." : "Confirm Payment"}
           </button>
-</div>
+        </div>
       </div>
     </div>
   );
 };
 
 export default PaymentPage;
+
