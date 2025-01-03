@@ -23,14 +23,14 @@ const Navbar = () => {
              Landinpage 
           </Link>
 
-          <Link to="/admin-menu" className="hover:text-blue-300">
-            Add
+          <Link to="/admin-menu-dashboard" className="hover:text-blue-300">
+            Menu
           </Link>
-          <Link to="/edit-menu" className="hover:text-blue-300">
-            Update
+          <Link to="/admin-staff-dashboard" className="hover:text-blue-300">
+            Staff 
           </Link>
-          <Link to="/view-menu" className="hover:text-blue-300">
-            View 
+          <Link to="/admin-customers" className="hover:text-blue-300">
+            Customers 
           </Link>
         </div>
 
@@ -81,11 +81,19 @@ const Navbar = () => {
             Update
           </Link>
           <Link
-            to="/contact"
+            to="/view-menu"
             className="block px-4 py-2 hover:bg-blue-400"
             onClick={toggleMenu}
           >
             View
+          </Link>
+
+          <Link
+            to="/admin-edit-customers"
+            className="block px-4 py-2 hover:bg-blue-400"
+            onClick={toggleMenu}
+          >
+            Customers
           </Link>
         </div>
       )}

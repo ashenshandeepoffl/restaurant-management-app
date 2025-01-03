@@ -121,3 +121,75 @@ def edit_menu(id):
         return jsonify({"message": "Menu item updated successfully!"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+# View all customers
+@admin_bp.route("/view_customers", methods=["GET"])
+def view_customers():
+    try:
+        connection = pymysql.connect(**db_config)
+        cursor = connection.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT * FROM customers")
+        customers = cursor.fetchall()
+        connection.close()
+        return jsonify(customers), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+# Add a customer
+@admin_bp.route("/add_customer", methods=["POST"])
+def add_customer():
+    try:
+        data = request.json
+        name = data["name"]
+        email = data["email"]
+        phone = data["phone"]
+        password = data["password"]  # Ensure you hash passwords in a real app
+
+        connection = pymysql.connect(**db_config)
+        cursor = connection.cursor()
+        query = "INSERT INTO customers (name, email, phone, password) VALUES (%s, %s, %s, %s)"
+        cursor.execute(query, (name, email, phone, password))
+        connection.commit()
+        connection.close()
+        return jsonify({"message": "Customer added successfully"}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+# Edit a customer
+@admin_bp.route("/edit_customer/<int:customer_id>", methods=["PUT"])
+def edit_customer(customer_id):
+    try:
+        data = request.json
+        name = data.get("name")
+        email = data.get("email")
+        phone = data.get("phone")
+        password = data.get("password")  # Ensure you hash passwords in a real app
+
+        connection = pymysql.connect(**db_config)
+        cursor = connection.cursor()
+        query = """
+            UPDATE customers 
+            SET name = %s, email = %s, phone = %s, password = %s
+            WHERE customer_id = %s
+        """
+        cursor.execute(query, (name, email, phone, password, customer_id))
+        connection.commit()
+        connection.close()
+        return jsonify({"message": "Customer updated successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+# Delete a customer
+@admin_bp.route("/delete_customer/<int:customer_id>", methods=["DELETE"])
+def delete_customer(customer_id):
+    try:
+        connection = pymysql.connect(**db_config)
+        cursor = connection.cursor()
+        query = "DELETE FROM customers WHERE customer_id = %s"
+        cursor.execute(query, (customer_id,))
+        connection.commit()
+        connection.close()
+        return jsonify({"message": "Customer deleted successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
