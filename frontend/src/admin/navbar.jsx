@@ -64,28 +64,28 @@ const Navbar = () => {
             className="block px-4 py-2 hover:bg-blue-400"
             onClick={toggleMenu}
           >
-            Home
+            LandingPage
           </Link>
           <Link
             to="/about"
             className="block px-4 py-2 hover:bg-blue-400"
             onClick={toggleMenu}
           >
-            About
+            Add
           </Link>
           <Link
             to="/menu"
             className="block px-4 py-2 hover:bg-blue-400"
             onClick={toggleMenu}
           >
-            Menu
+            Update
           </Link>
           <Link
             to="/contact"
             className="block px-4 py-2 hover:bg-blue-400"
             onClick={toggleMenu}
           >
-            Contact
+            View
           </Link>
         </div>
       )}
