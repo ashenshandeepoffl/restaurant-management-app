@@ -193,3 +193,24 @@ def delete_customer(customer_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+# Add a customer
+@admin_bp.route("/add_staff", methods=["POST"])
+def add_staff():
+    try:
+        data = request.json
+        staff_id = data["staff_id"]
+        name = data["name"]
+        role = data["role"]
+        phone = data["phone"] 
+        email = data["email"]         
+
+        connection = pymysql.connect(**db_config)
+        cursor = connection.cursor()
+        query = "INSERT INTO staff (staff_id, name, role, phone, email) VALUES (%s, %s, %s, %s, %s)"
+        cursor.execute(query, (staff_id, name, role, phone, email))
+        connection.commit()
+        connection.close()
+        return jsonify({"message": "Staff deatils added successfully"}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
