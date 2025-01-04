@@ -193,24 +193,77 @@ def delete_customer(customer_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-# Add a customer
+
+# Add a staff member
 @admin_bp.route("/add_staff", methods=["POST"])
 def add_staff():
     try:
         data = request.json
-        staff_id = data["staff_id"]
-        name = data["name"]
-        role = data["role"]
-        phone = data["phone"] 
-        email = data["email"]         
+        staff_id = data.get("staff_id")
+        name = data.get("name")
+        role = data.get("role")
+        phone = data.get("phone")
+        email = data.get("email")
 
+        # Validate input fields
+        if not all([staff_id, name, role, phone, email]):
+            return jsonify({"error": "All fields are required!"}), 400
+
+        # Insert staff details into the database
         connection = pymysql.connect(**db_config)
         cursor = connection.cursor()
-        query = "INSERT INTO staff (staff_id, name, role, phone, email) VALUES (%s, %s, %s, %s, %s)"
+        query = """
+            INSERT INTO staff (staff_id, name, role, phone, email)
+            VALUES (%s, %s, %s, %s, %s)
+        """
         cursor.execute(query, (staff_id, name, role, phone, email))
         connection.commit()
         connection.close()
-        return jsonify({"message": "Staff deatils added successfully"}), 201
+
+        return jsonify({"message": "Staff added successfully!"}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@admin_bp.route("/edit_staff/<int:staff_id>", methods=["PUT"])
+def edit_staff(staff_id):
+    try:
+        data = request.json
+        name = data.get("name")
+        role = data.get("role")
+        email = data.get("email")
+
+        # Ensure you handle any additional fields as necessary, such as password or other staff details.
+
+        # Connect to the database
+        connection = pymysql.connect(**db_config)
+        cursor = connection.cursor()
+
+        # SQL query to update the staff member
+        query = """
+            UPDATE staff
+            SET name = %s, role = %s, email = %s
+            WHERE staff_id = %s
+        """
+        cursor.execute(query, (name, role, email, staff_id))
+        connection.commit()
+
+        # Close the connection
+        connection.close()
+
+        return jsonify({"message": "Staff member updated successfully"}), 200
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+# View all customers
+@admin_bp.route("/view_staff", methods=["GET"])
+def view_staff():
+    try:
+        connection = pymysql.connect(**db_config)
+        cursor = connection.cursor(pymysql.cursors.DictCursor)
+        cursor.execute("SELECT * FROM staff")
+        staff = cursor.fetchall()
+        connection.close()
+        return jsonify(staff), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

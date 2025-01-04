@@ -12,6 +12,7 @@ import AdminCustomerDashboard from './admin/admin_customer';
 import AdminMenuDashboard from './admin/admin_menu_dashboard';
 import AdminStaffDashboard from './admin/admin_staff_dashboard';
 import AdminAddStaff from './admin/admin_add_staff';
+import EditStaff from './admin/admin_edit_staff';
 import Navbar from './admin/navbar';
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Route path="/admin-menu-dashboard" element={<AdminMenuDashboard/>} />
           <Route path="/admin-staff-dashboard" element={<AdminStaffDashboard/>} />
           <Route path="/add-staff" element={<AdminAddStaff/>} />
+          <Route path="/edit-staff" element={<EditStaff/>} />
           <Route path="/Navbar" element={<Navbar />} />
         </Routes>
       </div>
