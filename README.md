@@ -8,4 +8,6 @@ backend\Scripts\activate
 <!-- Then, enter this command -->
 pip install -r req.txt
 
+npm install react-router-dom
+npm install axios
 

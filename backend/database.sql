@@ -1,7 +1,7 @@
 -- Create the database if it doesn't exist
 CREATE DATABASE IF NOT EXISTS RestaurantAxioraLabs;
 USE RestaurantAxioraLabs;
-
+    
 -- Create customers table
 CREATE TABLE IF NOT EXISTS customers (
     customer_id INT AUTO_INCREMENT PRIMARY KEY,
